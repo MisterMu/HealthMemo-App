@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, View, Text } from 'react-native';
 import { RegisterForm1 } from '../components/register_form/form_1';
+import { RegisterForm2 } from '../components/register_form/form_2';
 
 export class RegisterScreen extends React.Component {
   constructor(props) {
@@ -43,7 +44,7 @@ export class RegisterScreen extends React.Component {
           onRequestClose={this.backStage}
           animationType='slide'
         >
-          <Text>test</Text>
+          <RegisterForm2 next={this.nextStage}/>
         </Modal>
       </View>
     );
