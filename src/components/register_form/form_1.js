@@ -23,6 +23,7 @@ export class RegisterForm1 extends React.Component {
   }
 
   handleNextBtnPress = () => {
+    // TODO: send input value to RegisterScreen
     this.props.next();
   }
 
@@ -39,15 +40,16 @@ export class RegisterForm1 extends React.Component {
             tintColor={color.APP_THEME}
             containerStyle={styles.container}
             onChangeText={(text) => this.handleFnameChange(text)}
-            prefix='test'
+            returnKeyType='next'
+            onSubmitEditing={() => this.refs.l_name.focus()}
           />
           <TextField
             label='Last Name'
             value={this.state.l_name}
+            ref='l_name'
             tintColor={color.APP_THEME}
             containerStyle={styles.container}
             onChangeText={(text) => this.handleLnameChange(text)}
-            suffix='test'
           />
         </View>
         <View style={styles.btn}>
