@@ -31,6 +31,10 @@ const styles = StyleSheet.create({
     width: metrics.DEVICE_WIDTH * COMP_WIDTH_RATIO,
     alignSelf: 'center',
     marginTop: 30
+  },
+  picker: {
+    borderBottomWidth: 0.5,
+    borderBottomColor: 'rgba(0, 0, 0, 0.38)'
   }
 });
 
