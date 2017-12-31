@@ -24,6 +24,7 @@ export class RegisterForm1 extends React.Component {
 
   handleNextBtnPress = () => {
     // TODO: send input value to RegisterScreen
+    // TODO: validation required
     this.props.next();
   }
 
