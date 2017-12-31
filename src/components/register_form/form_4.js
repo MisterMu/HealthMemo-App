@@ -55,16 +55,20 @@ export class RegisterForm4 extends React.Component {
             tintColor={color.APP_THEME}
             containerStyle={styles.container}
           />
-          {rtt_view}
-          {(this.state.rtt[3])?
-            <TextField
-              ref='other'
-              label='Other'
-              value={this.state.other}
-              onValueChange={this.handleOtherChange}
-              tintColor={color.APP_THEME}
-              containerStyle={styles.container}
-            /> : null}
+          <View style={styles.container}>
+            <Text style={styles.label}>Right to treatment</Text>
+            {rtt_view}
+            {(this.state.rtt[3])?
+              <TextField
+                ref='other'
+                label='Other'
+                value={this.state.other}
+                onValueChange={this.handleOtherChange}
+                tintColor={color.APP_THEME}
+                containerStyle={styles.container}
+                autoFocus={true}
+              /> : null}
+          </View>
         </View>
         <View style={styles.btn}>
           <Button
