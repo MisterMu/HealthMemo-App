@@ -11,8 +11,8 @@ const styles = StyleSheet.create({
     paddingRight: metrics.DEVICE_WIDTH * 0.1
   },
   form_container: {
-    marginTop: metrics.DEVICE_HEIGHT * 0.15,
-    height: metrics.DEVICE_HEIGHT * 0.5
+    marginTop: metrics.DEVICE_HEIGHT * 0.1,
+    height: metrics.DEVICE_HEIGHT * 0.55
   },
   img_container: {
     width: metrics.DEVICE_WIDTH * IMG_SIZE_RATIO,
@@ -49,6 +49,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 5,
     left: 35
+  },
+  label: {
+    fontSize: 12,
+    color: 'rgba(0, 0, 0, 0.38)',
+    marginBottom: 5
   }
 });
 
