@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
+
 import metrics from '../../../config/metrics';
+import color from '../../../config/color';
 
 const IMG_SIZE_RATIO = 0.3;
 const IMG_BORDER_RADIUS = IMG_SIZE_RATIO / 2;
@@ -13,6 +15,11 @@ const styles = StyleSheet.create({
   form_container: {
     marginTop: metrics.DEVICE_HEIGHT * 0.1,
     height: metrics.DEVICE_HEIGHT * 0.55
+  },
+  form_title: {
+    fontSize: metrics.FONT_SIZE * 2,
+    color: color.APP_THEME,
+    marginBottom: 15
   },
   img_container: {
     width: metrics.DEVICE_WIDTH * IMG_SIZE_RATIO,
