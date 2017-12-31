@@ -41,6 +41,15 @@ export class RegisterForm2 extends React.Component {
     this.setState({gender: value});
   }
 
+  handleRegionChange = (text) => {
+    this.setState({region: text});
+  }
+
+  handleNextBtnClick = () => {
+    // TODO: send input value to register screen
+    this.props.next();
+  }
+
   render () {
     return (
       <View style={styles.host}>
@@ -63,12 +72,19 @@ export class RegisterForm2 extends React.Component {
               <Picker.Item label='FEMALE' value='f'/>
             </Picker>
           </View>
+          <TextField
+            label='Region'
+            value={this.state.region}
+            tintColor={color.APP_THEME}
+            containerStyle={styles.container}
+            onValueChange={this.handleRegionChange}
+          />
         </View>
         <View style={styles.btn}>
           <Button
             title='NEXT'
             color={color.APP_THEME}
-            onPress={this.props.next}
+            onPress={this.handleNextBtnClick}
           />
         </View>
       </View>
