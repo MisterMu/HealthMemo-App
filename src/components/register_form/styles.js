@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     marginBottom: 15
   },
   btn: {
-    width: metrics.DEVICE_WIDTH * COM,
+    width: metrics.DEVICE_WIDTH * COMP_WIDTH_RATIO,
     alignSelf: 'center',
     marginTop: 30
   }
