@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
     height: metrics.DEVICE_WIDTH * IMG_SIZE_RATIO,
     borderRadius: metrics.DEVICE_WIDTH * IMG_BORDER_RADIUS,
     alignSelf: 'center',
+    marginBottom: 15,
     backgroundColor: 'red'
   },
   container: {
