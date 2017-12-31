@@ -24,10 +24,16 @@ export class RegisterForm2 extends React.Component {
 
   handleDateInputFocus = () => {
     Keyboard.dismiss();
-    DatePickerAndroid.open(this.dob).then((action) => {
-      this.setState({
-        dob: new Date(action.year, action.month, action.day)
-      });
+    let option = {
+      date: (this.state.dob instanceof Date)? this.state.dob : new Date(),
+      maxDate: new Date()
+    }
+    DatePickerAndroid.open(option).then((action) => {
+      if (action.action === 'dateSetAction') {
+        this.setState({
+          dob: new Date(action.year, action.month, action.day)
+        });
+      }
     }).catch();
   }
 
