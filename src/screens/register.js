@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal, View, Text } from 'react-native';
 import { RegisterForm1 } from '../components/register_form/form_1';
 import { RegisterForm2 } from '../components/register_form/form_2';
+import { RegisterForm3 } from '../components/register_form/form_3';
 
 export class RegisterScreen extends React.Component {
   constructor(props) {
@@ -31,7 +32,7 @@ export class RegisterScreen extends React.Component {
     return (
       <View>
         <Modal
-          visible={this.state.stage == 1}
+          visible={this.state.stage === 1}
           transparent={true}
           onRequestClose={this.backStage}
           animationType='slide'
@@ -39,12 +40,20 @@ export class RegisterScreen extends React.Component {
           <RegisterForm1 next={this.nextStage}/>
         </Modal>
         <Modal
-          visible={this.state.stage == 2}
+          visible={this.state.stage === 2}
           transparent={true}
           onRequestClose={this.backStage}
           animationType='slide'
         >
           <RegisterForm2 next={this.nextStage}/>
+        </Modal>
+        <Modal
+          visible={this.state.stage === 3}
+          transparent={true}
+          onRequestClose={this.backStage}
+          animationType='slide'
+        >
+          <RegisterForm3 next={this.nextStage}/>
         </Modal>
       </View>
     );
