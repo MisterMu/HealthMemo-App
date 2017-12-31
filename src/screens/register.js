@@ -4,7 +4,8 @@ import {
   RegisterForm1,
   RegisterForm2,
   RegisterForm3,
-  RegisterForm4
+  RegisterForm4,
+  RegisterForm5
 } from '../components/register_form';
 
 export class RegisterScreen extends React.Component {
@@ -65,6 +66,14 @@ export class RegisterScreen extends React.Component {
           animationType='slide'
         >
           <RegisterForm4 next={this.nextStage}/>
+        </Modal>
+        <Modal
+          visible={this.state.stage === 5}
+          transparent={true}
+          onRequestClose={this.backStage}
+          animationType='slide'
+        >
+          <RegisterForm5 done={this.nextStage}/>
         </Modal>
       </View>
     );
