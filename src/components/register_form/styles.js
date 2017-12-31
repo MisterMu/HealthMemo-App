@@ -35,6 +35,9 @@ const styles = StyleSheet.create({
   picker: {
     borderBottomWidth: 0.5,
     borderBottomColor: 'rgba(0, 0, 0, 0.38)'
+  },
+  number: {
+    textAlign: 'center'
   }
 });
 
