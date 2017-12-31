@@ -24,8 +24,7 @@ const styles = StyleSheet.create({
   container: {
     width: metrics.DEVICE_WIDTH * COMP_WIDTH_RATIO,
     alignSelf: 'center',
-    marginTop: 15,
-    marginBottom: 15
+    marginBottom: 25
   },
   btn: {
     width: metrics.DEVICE_WIDTH * COMP_WIDTH_RATIO,
@@ -34,10 +33,22 @@ const styles = StyleSheet.create({
   },
   picker: {
     borderBottomWidth: 0.5,
-    borderBottomColor: 'rgba(0, 0, 0, 0.38)'
+    borderBottomColor: 'rgba(0, 0, 0, 0.38)',
+    paddingTop: 20
   },
   number: {
     textAlign: 'center'
+  },
+  rtt_container: {
+    position: 'relative',
+    width: metrics.DEVICE_WIDTH * COMP_WIDTH_RATIO,
+    alignSelf: 'center',
+    marginBottom: 10
+  },
+  rtt_label: {
+    position: 'absolute',
+    top: 5,
+    left: 35
   }
 });
 
