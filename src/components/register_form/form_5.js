@@ -14,9 +14,9 @@ export class RegisterForm5 extends React.Component {
   constructor (props) {
     super (props);
     this.state = {
-      ec_name: '',
-      ec_num: '',
-      ec_mail: '',
+      ec_name: this.props.ec_name || '',
+      ec_num: this.props.ec_num || '',
+      ec_mail: this.props.ec_mail || '',
       err_name: '',
       err_num: '',
       err_mail: ''
@@ -73,7 +73,12 @@ export class RegisterForm5 extends React.Component {
 
   handleDoneBtnPress = () => {
     if (this.state.ec_name !== '' && this.state.ec_num !== '' && this.validateEcMail(this.state.ec_mail)) {
-      this.props.done();
+      let data = {
+        ec_name: this.state.ec_name,
+        ec_num: this.state.ec_num,
+        ec_mail: this.state.ec_mail
+      }
+      this.props.done(data);
     } else {
       this.handleEcNameChange(this.state.ec_name);
       this.handleEcNumChange(this.state.ec_num);

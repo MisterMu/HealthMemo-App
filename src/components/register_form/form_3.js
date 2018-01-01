@@ -15,9 +15,9 @@ export class RegisterForm3 extends React.Component {
   constructor (props) {
     super (props);
     this.state = {
-      weight: '',
-      height: '',
-      blood_type: '',
+      weight: this.props.weight || '',
+      height: this.props.height || '',
+      blood_type: this.props.blood_type || '',
       err_weight: '',
       err_height: ''
     };
@@ -52,9 +52,13 @@ export class RegisterForm3 extends React.Component {
   }
 
   handelNextBtnClick = () => {
-    // TODO: send input value to register screen
     if (this.state.blood_type !== '' && this.state.height !== '' && this.state.weight !== '') {
-      this.props.next();
+      let data = {
+        weight: this.state.weight,
+        height: this.state.height,
+        blood_type: this.state.blood_type
+      }
+      this.props.next(data);
     } else {
       if (this.state.blood_type === '') {
         Alert.alert('Blood type required', 'Please select your blood type.');

@@ -10,8 +10,8 @@ export class RegisterForm1 extends React.Component {
   constructor(props) {
     super (props);
     this.state = {
-      f_name: '',
-      l_name: '',
+      f_name: this.props.f_name || '',
+      l_name: this.props.l_name || '',
       err_f_name: '',
       err_l_name: ''
     };
@@ -40,9 +40,12 @@ export class RegisterForm1 extends React.Component {
   }
 
   handleNextBtnPress = () => {
-    // TODO: send input value to RegisterScreen
     if (this.state.f_name !== '' && this.state.l_name !== '') {
-      this.props.next();
+      let data = {
+        f_name: this.state.f_name,
+        l_name: this.state.l_name
+      }
+      this.props.next(data);
     } else {
       this.handleFnameChange(this.state.f_name);
       this.handleLnameChange(this.state.l_name);

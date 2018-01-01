@@ -8,18 +8,26 @@ import {
   RegisterForm5
 } from '../components/register_form';
 
+var formData = {};
+
 export class RegisterScreen extends React.Component {
   constructor(props) {
     super (props);
     this.state = {
-      stage: 1
+      stage: 1,
+      data: formData
     }
   }
 
-  nextStage = () => {
+  nextStage = (data) => {
     if (this.state.stage < 5) {
-      this.setState({stage: this.state.stage + 1});
+      formData = {...formData, ...data};
+      this.setState({
+        stage: this.state.stage + 1,
+        data: formData
+      });
     } else {
+      console.log(this.state.data);
       // TODO: redirect to dashboard
     }
   }
@@ -33,6 +41,7 @@ export class RegisterScreen extends React.Component {
   }
 
   render () {
+    let data = this.state.data;
     return (
       <View>
         <Modal
@@ -41,7 +50,11 @@ export class RegisterScreen extends React.Component {
           onRequestClose={this.backStage}
           animationType='slide'
         >
-          <RegisterForm1 next={this.nextStage}/>
+          <RegisterForm1
+            next={this.nextStage}
+            f_name={data.f_name}
+            l_name={data.l_name}
+          />
         </Modal>
         <Modal
           visible={this.state.stage === 2}
@@ -49,7 +62,12 @@ export class RegisterScreen extends React.Component {
           onRequestClose={this.backStage}
           animationType='slide'
         >
-          <RegisterForm2 next={this.nextStage}/>
+          <RegisterForm2
+            next={this.nextStage}
+            dob={data.dob}
+            gender={data.gender}
+            region={data.region}
+          />
         </Modal>
         <Modal
           visible={this.state.stage === 3}
@@ -57,7 +75,12 @@ export class RegisterScreen extends React.Component {
           onRequestClose={this.backStage}
           animationType='slide'
         >
-          <RegisterForm3 next={this.nextStage}/>
+          <RegisterForm3
+            next={this.nextStage}
+            weight={data.weight}
+            height={data.height}
+            blood_type={data.blood_type}
+          />
         </Modal>
         <Modal
           visible={this.state.stage === 4}
@@ -65,7 +88,12 @@ export class RegisterScreen extends React.Component {
           onRequestClose={this.backStage}
           animationType='slide'
         >
-          <RegisterForm4 next={this.nextStage}/>
+          <RegisterForm4
+            next={this.nextStage}
+            id={data.id}
+            rtt={data.rtt}
+            other={data.other}
+          />
         </Modal>
         <Modal
           visible={this.state.stage === 5}
@@ -73,7 +101,12 @@ export class RegisterScreen extends React.Component {
           onRequestClose={this.backStage}
           animationType='slide'
         >
-          <RegisterForm5 done={this.nextStage}/>
+          <RegisterForm5
+            done={this.nextStage}
+            ec_name={data.ec_name}
+            ec_num={data.ec_num}
+            ec_mail={data.ec_mail}
+          />
         </Modal>
       </View>
     );

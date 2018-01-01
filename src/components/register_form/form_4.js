@@ -15,10 +15,11 @@ var rtt_array = [false, false, false, false];
 export class RegisterForm4 extends React.Component {
   constructor (props) {
     super (props);
+    (this.props.rtt)? rtt_array = this.props.rtt : null;
     this.state = {
-      id: '',
+      id: this.props.id || '',
       rtt: rtt_array,
-      other: '',
+      other: this.props.other || '',
       err_id: '',
       err_other: ''
     };
@@ -52,13 +53,17 @@ export class RegisterForm4 extends React.Component {
   }
 
   handleNextBtnPress = () => {
-    // TODO: validation required
     let pass = this.state.id !== '';
     if (this.state.rtt[3]) {
       pass = (this.state.other !== '' && pass);
     }
     if (pass) {
-      this.props.next();
+      let data = {
+        id: this.state.id,
+        rtt: this.state.rtt,
+        other: this.state.other
+      }
+      this.props.next(data);
     } else {
       this.handleIdInputChange(this.state.id);
       this.handleOtherChange(this.state.other);

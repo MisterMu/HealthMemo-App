@@ -18,9 +18,9 @@ export class RegisterForm2 extends React.Component {
   constructor(props) {
     super (props);
     this.state = {
-      dob: '',
-      gender: '',
-      region: '',
+      dob: this.props.dob || '',
+      gender: this.props.gender || '',
+      region: this.props.region || '',
       err_dob: '',
       err_region: ''
     };
@@ -60,9 +60,13 @@ export class RegisterForm2 extends React.Component {
   }
 
   handleNextBtnClick = () => {
-    // TODO: send input value to register screen
     if (this.state.dob !== '' && this.state.gender !== '' && this.state.region !== '') {
-      this.props.next();
+      let data = {
+        dob: this.state.dob,
+        gender: this.state.gender,
+        region: this.state.region
+      }
+      this.props.next(data);
     } else {
       if (this.state.dob === '') {
         this.setState({err_dob: error_messages.REQUIRE});
