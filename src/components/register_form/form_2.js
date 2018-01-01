@@ -4,13 +4,15 @@ import {
   DatePickerAndroid,
   Button,
   Keyboard,
-  Picker
+  Picker,
+  Alert
 } from 'react-native';
 import { TextField } from 'react-native-material-textfield';
 
 import styles from './styles';
 import * as DateTool from '../../../tools/date'
 import color from '../../../config/color';
+import error_messages from '../../../assets/values/error_messages';
 
 export class RegisterForm2 extends React.Component {
   constructor(props) {
@@ -18,7 +20,9 @@ export class RegisterForm2 extends React.Component {
     this.state = {
       dob: '',
       gender: '',
-      region: ''
+      region: '',
+      err_dob: '',
+      err_region: ''
     };
   }
 
@@ -31,24 +35,43 @@ export class RegisterForm2 extends React.Component {
     DatePickerAndroid.open(option).then((action) => {
       if (action.action === 'dateSetAction') {
         this.setState({
-          dob: new Date(action.year, action.month, action.day)
+          dob: new Date(action.year, action.month, action.day),
+          err_dob: ''
         });
       }
     }).catch();
   }
 
-  handleGenderChange = (value, index) => {
-    this.setState({gender: value});
+  handleGenderChange = (value) => {
+    if (value !== this.state.gender) {
+      this.setState({gender: value});
+    }
   }
 
   handleRegionChange = (text) => {
-    this.setState({region: text});
+    if (text !== this.state.region) {
+      this.setState({region: text});
+    }
+    if (text === '') {
+      this.setState({err_region: error_messages.REQUIRE});
+    } else {
+      this.setState({err_region: ''});
+    }
   }
 
   handleNextBtnClick = () => {
     // TODO: send input value to register screen
-    // TODO: validation required
-    this.props.next();
+    if (this.state.dob !== '' && this.state.gender !== '' && this.state.region !== '') {
+      this.props.next();
+    } else {
+      if (this.state.dob === '') {
+        this.setState({err_dob: error_messages.REQUIRE});
+      }
+      if (this.state.gender === '') {
+        Alert.alert('Gender required', 'Please select your gender.');
+      }
+      this.handleRegionChange(this.state.region);
+    }
   }
 
   render () {
@@ -58,6 +81,7 @@ export class RegisterForm2 extends React.Component {
           <TextField
             label='Date of Birth'
             value={DateTool.getFullFormat(this.state.dob)}
+            error={this.state.err_dob}
             tintColor={color.APP_THEME}
             containerStyle={styles.container}
             onFocus={this.handleDateInputFocus}
@@ -76,9 +100,10 @@ export class RegisterForm2 extends React.Component {
           <TextField
             label='Region'
             value={this.state.region}
+            error={this.state.err_region}
             tintColor={color.APP_THEME}
             containerStyle={styles.container}
-            onValueChange={this.handleRegionChange}
+            onChangeText={this.handleRegionChange}
           />
         </View>
         <View style={styles.btn}>

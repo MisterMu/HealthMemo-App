@@ -8,6 +8,7 @@ import {
 import { TextField } from 'react-native-material-textfield';
 import styles from './styles';
 import color from '../../../config/color';
+import error_messages from '../../../assets/values/error_messages';
 
 var rtt_array = [false, false, false, false];
 
@@ -17,12 +18,21 @@ export class RegisterForm4 extends React.Component {
     this.state = {
       id: '',
       rtt: rtt_array,
-      other: ''
+      other: '',
+      err_id: '',
+      err_other: ''
     };
   }
 
   handleIdInputChange = (text) => {
-    this.setState({id: text});
+    if (text !== this.state.id) {
+      this.setState({id: text});
+    }
+    if (text === '') {
+      this.setState({err_id: error_messages.REQUIRE});
+    } else {
+      this.setState({err_id: ''});
+    }
   }
 
   handleRttChange = (index) => {
@@ -31,13 +41,28 @@ export class RegisterForm4 extends React.Component {
   }
 
   handleOtherChange = (text) => {
-    this.setState({other: text});
+    if (text !== this.state.other) {
+      this.setState({other: text});
+    }
+    if (text === '') {
+      this.setState({err_other: error_messages.REQUIRE});
+    } else {
+      this.setState({err_other: ''});
+    }
   }
 
   handleNextBtnPress = () => {
     // TODO: validation required
-    // TODO: send input value to register screen
-    this.props.next();
+    let pass = this.state.id !== '';
+    if (this.state.rtt[3]) {
+      pass = (this.state.other !== '' && pass);
+    }
+    if (pass) {
+      this.props.next();
+    } else {
+      this.handleIdInputChange(this.state.id);
+      this.handleOtherChange(this.state.other);
+    }
   }
 
   render () {
@@ -50,7 +75,8 @@ export class RegisterForm4 extends React.Component {
           <TextField
             label='Citizen ID / Passport ID'
             value={this.state.id}
-            onValueChange={this.handleIdInputChange}
+            error={this.err_id}
+            onChangeText={this.handleIdInputChange}
             keyboardType='numeric'
             tintColor={color.APP_THEME}
             containerStyle={styles.container}
@@ -63,7 +89,8 @@ export class RegisterForm4 extends React.Component {
                 ref='other'
                 label='Other'
                 value={this.state.other}
-                onValueChange={this.handleOtherChange}
+                error={this.state.err_other}
+                onChangeText={this.handleOtherChange}
                 tintColor={color.APP_THEME}
                 containerStyle={styles.container}
                 autoFocus={true}

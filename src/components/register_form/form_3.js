@@ -2,12 +2,14 @@ import React from 'react';
 import {
   View,
   Button,
-  Picker
+  Picker,
+  Alert
 } from 'react-native';
 import { TextField } from 'react-native-material-textfield';
 
 import styles from './styles';
 import color from '../../../config/color';
+import error_messages from '../../../assets/values/error_messages';
 
 export class RegisterForm3 extends React.Component {
   constructor (props) {
@@ -15,26 +17,51 @@ export class RegisterForm3 extends React.Component {
     this.state = {
       weight: '',
       height: '',
-      blood_type: ''
+      blood_type: '',
+      err_weight: '',
+      err_height: ''
     };
   }
 
   handleWeightInputChange = (number) => {
-    this.setState({weight: number})
+    if (number !== this.state.weight) {
+      this.setState({weight: number});
+    }
+    if (number === '') {
+      this.setState({err_weight: error_messages.REQUIRE});
+    } else {
+      this.setState({err_weight: ''});
+    }
   }
 
   handleHeightInputChange = (number) => {
-    this.setState({height: height})
+    if (number !== this.state.height) {
+      this.setState({height: number});
+    }
+    if (number === '') {
+      this.setState({err_height: error_messages.REQUIRE});
+    } else {
+      this.setState({err_height: ''});
+    }
   }
 
-  handleBloodChange = (value, index) => {
-    this.setState({blood_type: value})
+  handleBloodChange = (value) => {
+    if (value !== this.state.blood_type) {
+      this.setState({blood_type: value});
+    }
   }
 
   handelNextBtnClick = () => {
     // TODO: send input value to register screen
-    // TODO: validation require
-    this.props.next();
+    if (this.state.blood_type !== '' && this.state.height !== '' && this.state.weight !== '') {
+      this.props.next();
+    } else {
+      if (this.state.blood_type === '') {
+        Alert.alert('Blood type required', 'Please select your blood type.');
+      }
+      this.handleWeightInputChange(this.state.weight);
+      this.handleHeightInputChange(this.state.height);
+    }
   }
 
   render () {
@@ -44,7 +71,8 @@ export class RegisterForm3 extends React.Component {
           <TextField
             label='Weight'
             value={this.state.weight}
-            onValueChange={this.handleWeightInputChange}
+            error={this.state.err_weight}
+            onChangeText={this.handleWeightInputChange}
             tintColor={color.APP_THEME}
             containerStyle={styles.container}
             style={styles.number}
@@ -56,7 +84,8 @@ export class RegisterForm3 extends React.Component {
           <TextField
             label='Height'
             value={this.state.height}
-            onValueChange={this.handleHeightInputChange}
+            error={this.state.err_height}
+            onChangeText={this.handleHeightInputChange}
             tintColor={color.APP_THEME}
             containerStyle={styles.container}
             style={styles.number}
