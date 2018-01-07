@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, View, Text } from 'react-native';
+import { Modal, View, Text, BackHandler, AsyncStorage } from 'react-native';
 import {
   RegisterForm1,
   RegisterForm2,
@@ -27,8 +27,15 @@ export class RegisterScreen extends React.Component {
         data: formData
       });
     } else {
-      console.log(this.state.data);
-      // TODO: redirect to dashboard
+      // console.log('data from register form', this.state.data);
+      let storageData = [];
+      Object.keys(this.state.data).map((key) => {
+        storageData.push([key, JSON.stringify(this.state.data[key])]);
+      });
+      // console.log('data that save to storage', storageData);
+      AsyncStorage.multiSet(storageData).then(() => {
+        this.props.done();
+      }).catch(err => console.error(err));
     }
   }
 
@@ -36,7 +43,7 @@ export class RegisterScreen extends React.Component {
     if (this.state.stage > 1) {
       this.setState({stage: this.state.stage - 1});
     } else {
-      // TODO: redirect to signin
+      BackHandler.exitApp();
     }
   }
 
