@@ -1,4 +1,5 @@
 import React from 'react';
+import { Text } from 'react-native';
 
 export class DashboardScreen extends React.Component {
   constructor (props) {
@@ -8,7 +9,11 @@ export class DashboardScreen extends React.Component {
     };
   }
 
+  static navigationOptions = {
+    title: 'Dashboard'
+  };
+
   render () {
-    return null;
+    return <Text>dashboard</Text>;
   }
 }
