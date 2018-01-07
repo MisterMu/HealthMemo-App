@@ -54,7 +54,7 @@ export class RegisterForm5 extends React.Component {
 
   validateEcMail = (mail) => {
     let pass = false;
-    let mail_patt = /(.[^@]+)@([\w]+)[.](\w+)/g;
+    let mail_patt = /([^@]+)@([\w]+)[.](\w+)/g;
     if (mail === '') {
       this.setState({err_mail: error_messages.REQUIRE});
       pass = false;
