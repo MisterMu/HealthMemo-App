@@ -4,25 +4,30 @@ import {
   Text,
   Button,
   StyleSheet,
-  Dimensions,
-  TouchableOpacity
+  TouchableOpacity,
+  Image
 } from 'react-native';
 
 import metrics from '../../config/metrics';
 import color from '../../config/color';
+import { getIcon } from '../../assets/icons';
 
 export class Appbar extends React.Component {
   render () {
     return (
       <View style={styles.host}>
         <TouchableOpacity style={styles.nav_btn} onPress={this.props.nav}>
-          {/* TODO: add 24dp menu icon */}
-          <View style={styles.btn_icon}/>
+          <Image
+            source={getIcon('menu_w')}
+            style={styles.btn_icon}
+          />
         </TouchableOpacity>
-        <Text style={styles.title}>test</Text>
+        <Text style={styles.title}>{this.props.title}</Text>
         <TouchableOpacity style={styles.call_btn} onPress={this.props.call}>
-          {/* TODO: add 24dp call icon */}
-          <View style={styles.btn_icon}/>
+          <Image
+            source={getIcon('call_w')}
+            style={styles.btn_icon}
+          />
         </TouchableOpacity>
       </View>
     );
@@ -34,29 +39,26 @@ const styles = StyleSheet.create({
     height: metrics.APP_BAR_HEIGHT,
     backgroundColor: color.APP_THEME,
     position: 'relative',
-    elevation: 5
+    elevation: 2
   },
   nav_btn: {
     position: 'absolute',
     top: 0,
     left: 0,
     width: 56,
-    height: 56,
-    backgroundColor: 'red'
+    height: 56
   },
   call_btn: {
     position: 'absolute',
     top: 0,
     right: 0,
     width: 56,
-    height: 56,
-    backgroundColor: 'red'
+    height: 56
   },
   btn_icon: {
     margin: 16,
     width: 24,
-    height: 24,
-    backgroundColor: 'blue'
+    height: 24
   },
   title: {
     color: 'white',
