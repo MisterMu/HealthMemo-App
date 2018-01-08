@@ -1,7 +1,7 @@
 import React from 'react';
 import { AsyncStorage, ActivityIndicator, View } from 'react-native';
 
-import { RegisterScreen, DashboardScreen } from './src/screens';
+import { RegisterScreen, DashboardScreen, Container } from './src/screens';
 
 export default class App extends React.Component {
   constructor (props) {
@@ -25,7 +25,7 @@ export default class App extends React.Component {
     if (this.state.render === 'register') {
       return <RegisterScreen done={() => this.setState({render: 'content'})}/>
     } else if (this.state.render === 'content') {
-      return null;
+      return <Container/>;
     } else {
       return (
         <View style={{flex: 1, justifyContent: 'center'}}>
