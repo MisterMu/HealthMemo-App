@@ -14,9 +14,9 @@ export default class App extends React.Component {
   componentDidMount () {
     AsyncStorage.getItem('user_info').then((data) => {
       if (data == null) {
-        this.setState({render: 'register'});
+        this.setState({ render: 'register' });
       } else {
-        this.setState({render: 'content'});
+        this.setState({ user: JSON.parse(data), render: 'content' });
       }
     }).catch(err => console.error(err));
   }
@@ -25,7 +25,7 @@ export default class App extends React.Component {
     if (this.state.render === 'register') {
       return <RegisterScreen done={() => this.setState({render: 'content'})}/>
     } else if (this.state.render === 'content') {
-      return <Container/>;
+      return <Container user={this.state.user}/>;
     } else {
       return (
         <View style={{flex: 1, justifyContent: 'center'}}>
