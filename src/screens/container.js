@@ -17,6 +17,7 @@ import {
   HospitalInfoScreen,
   EmergencyContactScreen
 } from './';
+import metrics from '../../config/metrics';
 
 export class Container extends React.Component {
   constructor (props) {
@@ -48,9 +49,15 @@ export class Container extends React.Component {
     return (
       <DrawerLayoutAndroid
         ref='sidebar'
-        drawerWidth={300}
+        drawerWidth={metrics.SIDEBAR_WIDTH}
         drawerPosition={DrawerLayoutAndroid.positions.Left}
-        renderNavigationView={() => <Sidebar nav={this.navigateTo}/>}
+        renderNavigationView={() => { return (
+            <Sidebar
+              nav={this.navigateTo}
+              name={this.props.user.f_name + ' ' + this.props.user.l_name}
+            />
+        )}}
+        statusBarBackgroundColor='rgba(0, 0, 0, 0.3)'
       >
         <Appbar
           title={this.state.route}
@@ -70,5 +77,6 @@ export class Container extends React.Component {
   navigateTo = (routeName) => {
     console.log('navigate to', routeName);
     this.setState({ route: routeName });
+    this.refs.sidebar.closeDrawer();
   }
 }
