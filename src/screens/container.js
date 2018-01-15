@@ -30,7 +30,11 @@ export class Container extends React.Component {
   render () {
     let screen = {};
     if (this.state.route === 'Dashboard') {
-      screen = <DashboardScreen/>;
+      let data = {
+        weight: this.props.user.weight,
+        height: this.props.user.height
+      }
+      screen = <DashboardScreen nav={this.navigateTo} user={data}/>;
     } else if (this.state.route === 'Profile') {
       screen = <ProfileScreen/>;
     } else if (this.state.route === 'Hospital Information') {
