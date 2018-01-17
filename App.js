@@ -25,7 +25,7 @@ export default class App extends React.Component {
     if (this.state.render === 'register') {
       return <RegisterScreen done={() => this.setState({render: 'content'})}/>
     } else if (this.state.render === 'content') {
-      return <Container user={this.state.user}/>;
+      return <Container/>;
     } else {
       return (
         <View style={{flex: 1, justifyContent: 'center'}}>

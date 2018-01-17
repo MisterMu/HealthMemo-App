@@ -30,13 +30,9 @@ export class Container extends React.Component {
   render () {
     let screen = {};
     if (this.state.route === 'Dashboard') {
-      let data = {
-        weight: this.props.user.weight,
-        height: this.props.user.height
-      }
-      screen = <DashboardScreen nav={this.navigateTo} user={data}/>;
+      screen = <DashboardScreen nav={this.navigateTo}/>;
     } else if (this.state.route === 'Profile') {
-      screen = <ProfileScreen/>;
+      screen = <ProfileScreen nav={this.navigateTo}/>;
     } else if (this.state.route === 'Hospital Information') {
       screen = <HospitalInfoScreen/>;
     } else if (this.state.route === 'Emergency Contact') {
@@ -47,7 +43,7 @@ export class Container extends React.Component {
       screen = <SuggestionScreen/>;
     } else if (this.state.route === 'Setting') {
       screen = <SettingScreen/>;
-    } else if (this.state.route === 'Emergency Call') {
+    } else if (this.state.route === 'Emergency Call') { 
       screen = <EmergencyCallScreen/>;
     }
     return (
@@ -58,7 +54,6 @@ export class Container extends React.Component {
         renderNavigationView={() => { return (
             <Sidebar
               nav={this.navigateTo}
-              name={this.props.user.f_name + ' ' + this.props.user.l_name}
             />
         )}}
         statusBarBackgroundColor='rgba(0, 0, 0, 0.3)'

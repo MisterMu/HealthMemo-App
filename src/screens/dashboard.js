@@ -3,7 +3,8 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  AsyncStorage
 } from 'react-native';
 
 import metrics from '../../config/metrics';
@@ -12,13 +13,26 @@ export class DashboardScreen extends React.Component {
   constructor (props) {
     super (props);
     this.state = {
-
+      ble: false,
+      weight: 0,
+      height: 0
     };
+  }
+
+  componentDidMount () {
+    AsyncStorage.getItem('user_info').then((data) => {
+      if (data) {
+        this.setState({
+          weight: JSON.parse(data).weight,
+          height: JSON.parse(data).height
+        })
+      }
+    }).catch(err => console.error(err));
   }
 
   render () {
     console.log('dashboard');
-    let bmi = this.props.user.weight / Math.pow((this.props.user.height / 100), 2);
+    let bmi = this.state.weight / Math.pow((this.state.height / 100), 2);
     bmi = bmi.toFixed(2);
     return (
       <View style={styles.host}>
@@ -33,11 +47,11 @@ export class DashboardScreen extends React.Component {
           <View style={styles.card}>
             <View style={styles.info}>
               <Text style={styles.label}>Weight</Text>
-              <Text style={styles.value}>{this.props.user.weight} kg</Text>
+              <Text style={styles.value}>{this.state.weight} kg</Text>
             </View>
             <View style={styles.info}>
               <Text style={styles.label}>Height</Text>
-              <Text style={styles.value}>{this.props.user.height} cm</Text>
+              <Text style={styles.value}>{this.state.height} cm</Text>
             </View>
             <View style={styles.info}>
               <Text style={styles.label}>BMI</Text>
@@ -50,7 +64,6 @@ export class DashboardScreen extends React.Component {
   }
 
   openSidebar = () => {
-    console.log('sidebar')
     this.refs.drawer.openDrawer();
   }
 }

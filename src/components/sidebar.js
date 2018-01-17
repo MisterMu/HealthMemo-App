@@ -5,7 +5,8 @@ import {
   Text,
   TouchableWithoutFeedback,
   TouchableNativeFeedback,
-  Image
+  Image,
+  AsyncStorage
 } from 'react-native';
 
 import { getIcon } from '../../assets/icons';
@@ -15,7 +16,19 @@ import metrics from '../../config/metrics';
 export class Sidebar extends React.Component {
   constructor (props) {
     super (props);
+    this.state = {
+      name: ''
+    }
   }
+
+  componentDidMount () {
+    AsyncStorage.getItem('user_info').then((data) => {
+      if (data) {
+        this.setState({ name: JSON.parse(data).f_name + ' ' + JSON.parse(data).l_name });
+      }
+    }).catch(err => consoler.error(err));
+  }
+
   render () {
     return (
       <View style={styles.host}>
@@ -24,7 +37,7 @@ export class Sidebar extends React.Component {
             <View style={styles.img}/>
             <View style={styles.name}>
               <Text style={styles.name_txt}>
-                {this.props.name}
+                {this.state.name}
               </Text>
             </View>
           </View>
