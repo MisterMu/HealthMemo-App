@@ -19,7 +19,7 @@ export class EmergencyContactScreen extends React.Component {
   constructor (props) {
     super (props);
     this.state = {
-      form: 0,
+      form: -1,
       list: []
     };
     var ec_list = [];
@@ -28,7 +28,7 @@ export class EmergencyContactScreen extends React.Component {
   _done = (data) => {
     let tmp = this.state.list;
     tmp[this.state.form] = data;
-    this.setState({form: 0, list: tmp});
+    this.setState({form: -1, list: tmp});
   }
 
   handleModalClose = () => {
@@ -36,7 +36,7 @@ export class EmergencyContactScreen extends React.Component {
     if (this.state.list[this.state.form].ec_name == '') {
       tmp.pop();
     }
-    this.setState({form: 0, list: tmp});
+    this.setState({form: -1, list: tmp});
   }
 
   getForm = (index) => {
@@ -46,6 +46,7 @@ export class EmergencyContactScreen extends React.Component {
         phone={this.state.list[index]? this.state.list[index].ec_num : ''}
         mail={this.state.list[index]? this.state.list[index].ec_mail : ''}
         done={this._done}
+        disable={this.state.form == 0}
       />
     );
   }
@@ -77,7 +78,7 @@ export class EmergencyContactScreen extends React.Component {
       <ScrollView style={styles.host}>
         <Modal
           onRequestClose={this.handleModalClose}
-          visible={this.state.form != 0}
+          visible={this.state.form >= 0}
           transparent={false}
           animationType='slide'
         >

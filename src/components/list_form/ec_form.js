@@ -113,6 +113,7 @@ export class EmergencyForm extends React.Component {
             value={this.state.ec_name}
             error={this.state.err_name}
             onChangeText={this.handleNameChange}
+            disabled={this.props.disable}
             tintColor={color.APP_THEME}
             containerStyle={styles.container}
             returnKeyType='next'
@@ -124,6 +125,7 @@ export class EmergencyForm extends React.Component {
             value={this.state.ec_num}
             error={this.state.err_num}
             onChangeText={this.handlePhoneChange}
+            disabled={this.props.disable}
             tintColor={color.APP_THEME}
             containerStyle={styles.container}
             keyboardType='phone-pad'
@@ -136,17 +138,21 @@ export class EmergencyForm extends React.Component {
             value={this.state.ec_mail}
             error={this.state.err_mail}
             onChangeText={this.handleMailChange}
+            disabled={this.props.disable}
             tintColor={color.APP_THEME}
             containerStyle={styles.container}
             keyboardType='email-address'
           />
         </View>
-        <View style={styles.btn_container}>
-          <Button
-            title='Save'
-            onPress={this.handleBtnPress}
-          />
-        </View>
+        {
+          (!this.props.disable)? 
+            <View style={styles.btn_container}>
+              <Button
+                title='Save'
+                onPress={this.handleBtnPress}
+              />
+            </View> : null
+        }
       </View>
     );
   }
