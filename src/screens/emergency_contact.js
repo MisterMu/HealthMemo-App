@@ -46,6 +46,7 @@ export class EmergencyContactScreen extends React.Component {
         phone={this.state.list[index]? this.state.list[index].ec_num : ''}
         mail={this.state.list[index]? this.state.list[index].ec_mail : ''}
         done={this._done}
+        back={this.handleModalClose}
         disable={this.state.form == 0}
       />
     );

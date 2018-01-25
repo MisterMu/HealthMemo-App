@@ -14,11 +14,16 @@ const styles = StyleSheet.create({
     position: 'relative'
   },
   back_btn: {
+    width: 48,
+    height: 48,
+    position: 'absolute',
+    top: 0,
+    left: 0
+  },
+  back_icon: {
     width: 24,
     height: 24,
-    position: 'absolute',
-    top: 12,
-    left: 16
+    margin: 12
   },
   title: {
     fontSize: metrics.FONT_SIZE * 1.4,
