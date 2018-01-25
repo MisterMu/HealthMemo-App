@@ -4,7 +4,8 @@ import {
   Image,
   Text,
   Button,
-  AsyncStorage
+  AsyncStorage,
+  TouchableOpacity
 } from 'react-native';
 import { TextField } from 'react-native-material-textfield';
 
@@ -29,7 +30,7 @@ export class EmergencyForm extends React.Component {
 
   handleNameChange = (name) => {
     if (this.state.ec_name != name) {
-      if (this.state.ec_name == '') {
+      if (name == '') {
         this.setState({
           ec_name: name,
           err_name: error_messages.REQUIRE
@@ -45,7 +46,7 @@ export class EmergencyForm extends React.Component {
 
   handlePhoneChange = (phone) => {
     if (this.state.ec_num != phone) {
-      if (this.state.ec_num == '') {
+      if (phone == '') {
         this.setState({
           ec_num: phone,
           err_num: error_messages.REQUIRE
@@ -61,7 +62,7 @@ export class EmergencyForm extends React.Component {
 
   handleMailChange = (mail) => {
     if (this.state.ec_mail != mail) {
-      if (this.state.ec_mail == '') {
+      if (mail == '') {
         this.setState({
           ec_mail: mail,
           err_mail: error_messages.REQUIRE
@@ -104,7 +105,9 @@ export class EmergencyForm extends React.Component {
     return (
       <View style={styles.host}>
         <View style={styles.app_bar}>
-          <Image style={styles.back_btn} source={getIcon('back_w')}/>
+          <TouchableOpacity style={styles.back_btn} onPress={this.props.back}>
+            <Image style={styles.back_icon} source={getIcon('back_w')}/>
+          </TouchableOpacity>
           <Text style={styles.title}>{(this.state.ec_name == '')? 'New Contact' : this.state.ec_name}</Text>
         </View>
         <View style={styles.form_container}>
