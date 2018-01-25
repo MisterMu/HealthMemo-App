@@ -103,7 +103,7 @@ export class EmergencyForm extends React.Component {
 
   render () {
     return (
-      <View style={styles.host}>
+      <View>
         <View style={styles.app_bar}>
           <TouchableOpacity style={styles.back_btn} onPress={this.props.back}>
             <Image style={styles.back_icon} source={getIcon('back_w')}/>

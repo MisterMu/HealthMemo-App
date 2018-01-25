@@ -3,12 +3,9 @@ import color from '../../../config/color';
 import metrics from '../../../config/metrics';
 
 const styles = StyleSheet.create({
-  host: {
-
-  },
   app_bar: {
     width: '100%',
-    height: 48,
+    height: 56,
     backgroundColor: color.APP_THEME,
     elevation: 2,
     position: 'relative'
@@ -17,8 +14,8 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     position: 'absolute',
-    top: 0,
-    left: 0
+    top: 4,
+    left: 4
   },
   back_icon: {
     width: 24,
@@ -31,7 +28,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     left: 72,
-    height: 48,
+    height: 56,
     textAlignVertical: 'center'
   },
   form_container: {
