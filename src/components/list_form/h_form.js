@@ -1,13 +1,17 @@
 import React from 'react';
 import {
   View,
-  Text
+  Text,
+  TouchableOpacity,
+  Image,
+  Button
 } from 'react-native';
 import { TextField } from 'react-native-material-textfield';
 
 import styles from './styles';
 import color from '../../../config/color';
 import error_messages from '../../../assets/values/error_messages';
+import { getIcon } from '../../../assets/icons';
 
 export class HospitalForm extends React.Component {
   constructor (props) {
@@ -119,7 +123,7 @@ export class HospitalForm extends React.Component {
         <TouchableOpacity style={styles.back_btn} onPress={this.props.back}>
           <Image style={styles.back_icon} source={getIcon('back_w')}/>
         </TouchableOpacity>
-          <Text style={styles.title}>{(this.state.ec_name == '')? 'New Hospital' : this.state.ec_name}</Text>
+          <Text style={styles.title}>{(this.props.name == '')? 'New Hospital' : this.props.name}</Text>
         </View>
         <View style={styles.form_container}>
           <TextField
