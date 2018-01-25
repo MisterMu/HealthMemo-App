@@ -82,7 +82,7 @@ export class RegisterForm5 extends React.Component {
       let tmp = {
         ec_name: 'Emergency Contact',
         ec_num: '1669',
-        ec_mail: ''
+        ec_mail: '-'
       }
       AsyncStorage.setItem('ec', JSON.stringify([tmp, data])).then(() => {
         this.props.done(data);
