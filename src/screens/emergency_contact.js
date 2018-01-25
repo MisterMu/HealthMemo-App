@@ -64,7 +64,6 @@ export class EmergencyContactScreen extends React.Component {
     AsyncStorage.getItem('ec').then((data) => {
       if (data) {
         ec_list = JSON.parse(data);
-        console.log(ec_list)
         this.setState({list: ec_list});
       }
     });
