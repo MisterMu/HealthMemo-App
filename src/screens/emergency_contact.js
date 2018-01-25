@@ -81,7 +81,6 @@ export class EmergencyContactScreen extends React.Component {
           onRequestClose={this.handleModalClose}
           visible={this.state.form >= 0}
           transparent={false}
-          animationType='slide'
         >
           {this.getForm(this.state.form)}
         </Modal>
