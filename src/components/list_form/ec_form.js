@@ -108,7 +108,7 @@ export class EmergencyForm extends React.Component {
           <TouchableOpacity style={styles.back_btn} onPress={this.props.back}>
             <Image style={styles.back_icon} source={getIcon('back_w')}/>
           </TouchableOpacity>
-          <Text style={styles.title}>{(this.state.ec_name == '')? 'New Contact' : this.state.ec_name}</Text>
+          <Text style={styles.title}>{(this.props.name == '')? 'New Contact' : this.props.name}</Text>
         </View>
         <View style={styles.form_container}>
           <TextField
