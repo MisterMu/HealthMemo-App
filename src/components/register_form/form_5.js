@@ -2,7 +2,8 @@ import React from 'react';
 import {
   View,
   Button,
-  Text
+  Text,
+  AsyncStorage
 } from 'react-native';
 import { TextField } from 'react-native-material-textfield';
 
@@ -78,7 +79,14 @@ export class RegisterForm5 extends React.Component {
         ec_num: this.state.ec_num,
         ec_mail: this.state.ec_mail
       }
-      this.props.done(data);
+      let tmp = {
+        ec_name: 'Emergency Contact',
+        ec_num: '1669',
+        ec_mail: ''
+      }
+      AsyncStorage.setItem('ec', JSON.stringify([tmp, data])).then(() => {
+        this.props.done(data);
+      }).catch(err => console.error(err));
     } else {
       this.handleEcNameChange(this.state.ec_name);
       this.handleEcNumChange(this.state.ec_num);
