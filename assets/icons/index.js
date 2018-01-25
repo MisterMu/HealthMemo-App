@@ -9,6 +9,8 @@ export function getIcon (name) {
     case 'Hospital Information': return require('./ic_local_hospital_black_24dp.png');
     case 'Setting': return require('./ic_settings_black_24dp.png');
     case 'Emergency Contact': return require('./ic_contacts_black_24dp.png');
+    case 'add_b': return require('./ic_add_circle_outline_black_24dp.png');
+    case 'back_w': return require('./ic_arrow_back_white_24dp.png');
     default : return require('./ic_insert_chart_black_24dp.png');
   }
 }
