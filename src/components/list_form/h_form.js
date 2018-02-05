@@ -4,7 +4,8 @@ import {
   Text,
   TouchableOpacity,
   Image,
-  Button
+  Button,
+  ScrollView
 } from 'react-native';
 import { TextField } from 'react-native-material-textfield';
 
@@ -38,7 +39,7 @@ export class HospitalForm extends React.Component {
       } else {
         this.setState({
           h_name: name,
-          err_name: error_messages.REQUIRE
+          err_name: ''
         });
       }
     }
@@ -54,7 +55,7 @@ export class HospitalForm extends React.Component {
       } else {
         this.setState({
           h_num: num,
-          err_num: error_messages.REQUIRE
+          err_num: ''
         });
       }
     }
@@ -70,7 +71,7 @@ export class HospitalForm extends React.Component {
       } else {
         this.setState({
           h_addr: addr,
-          err_addr: error_messages.REQUIRE
+          err_addr: ''
         });
       }
     }
@@ -86,7 +87,7 @@ export class HospitalForm extends React.Component {
       } else {
         this.setState({
           h_tel: tel,
-          err_tel: error_messages.REQUIRE
+          err_tel: ''
         });
       }
     }
@@ -95,10 +96,10 @@ export class HospitalForm extends React.Component {
   handleBtnPress = () => {
     if (this.state.h_name != '' && this.state.h_num != '' && this.state.h_addr != '' && this.state.h_tel != '') {
       this.props.done({
-        h_name: this.state.h_name,
-        h_num: this.state.h_num,
-        h_addr: this.state.h_addr,
-        h_tel: this.state.h_tel
+        name: this.state.h_name,
+        num: this.state.h_num,
+        addr: this.state.h_addr,
+        tel: this.state.h_tel
       });
     } else {
       if (this.state.h_name == '') {
@@ -118,64 +119,66 @@ export class HospitalForm extends React.Component {
 
   render () {
     return (
-      <View>
+      <View style={styles.host}>
         <View style={styles.app_bar}>
-        <TouchableOpacity style={styles.back_btn} onPress={this.props.back}>
-          <Image style={styles.back_icon} source={getIcon('back_w')}/>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.back_btn} onPress={this.props.back}>
+            <Image style={styles.back_icon} source={getIcon('back_w')}/>
+          </TouchableOpacity>
           <Text style={styles.title}>{(this.props.name == '')? 'New Hospital' : this.props.name}</Text>
         </View>
-        <View style={styles.form_container}>
-          <TextField
-            label='Hospital name'
-            value={this.state.h_name}
-            error={this.state.err_name}
-            onChangeText={this.handleNameChange}
-            tintColor={color.APP_THEME}
-            containerStyle={styles.container}
-            returnKeyType='next'
-            onSubmitEditing={() => this.refs.num.focus()}
-          />
-          <TextField
-            ref='num'
-            label='Patient ID'
-            value={this.state.h_num}
-            error={this.state.err_num}
-            onChangeText={this.handleNumChange}
-            tintColor={color.APP_THEME}
-            containerStyle={styles.container}
-            keyboardType='numeric'
-            returnKeyType='next'
-            onSubmitEditing={() => this.refs.addr.focus()}
-          />
-          <TextField
-            ref='addr'
-            label='Address'
-            value={this.state.h_addr}
-            error={this.state.err_addr}
-            onChangeText={this.handleAddrChange}
-            tintColor={color.APP_THEME}
-            containerStyle={styles.container}
-            returnKeyType='next'
-            onSubmitEditing={() => this.refs.tel.focus()}
-          />
-          <TextField
-            ref='tel'
-            label='Telephone number'
-            value={this.state.h_tel}
-            error={this.state.err_tel}
-            onChangeText={this.handleTelChange}
-            tintColor={color.APP_THEME}
-            containerStyle={styles.container}
-            keyboardType='phone-pad'
-          />
-        </View>
-        <View style={styles.btn_container}>
-          <Button
-            title='Save'
-            onPress={this.handleBtnPress}
-          />
-        </View>
+        <ScrollView>
+          <View style={styles.form_container}>
+            <TextField
+              label='Hospital name'
+              value={this.state.h_name}
+              error={this.state.err_name}
+              onChangeText={this.handleNameChange}
+              tintColor={color.APP_THEME}
+              containerStyle={styles.container}
+              returnKeyType='next'
+              onSubmitEditing={() => this.refs.num.focus()}
+            />
+            <TextField
+              ref='num'
+              label='Patient ID'
+              value={this.state.h_num}
+              error={this.state.err_num}
+              onChangeText={this.handleNumChange}
+              tintColor={color.APP_THEME}
+              containerStyle={styles.container}
+              keyboardType='numeric'
+              returnKeyType='next'
+              onSubmitEditing={() => this.refs.addr.focus()}
+            />
+            <TextField
+              ref='addr'
+              label='Address'
+              value={this.state.h_addr}
+              error={this.state.err_addr}
+              onChangeText={this.handleAddrChange}
+              tintColor={color.APP_THEME}
+              containerStyle={styles.container}
+              returnKeyType='next'
+              onSubmitEditing={() => this.refs.tel.focus()}
+            />
+            <TextField
+              ref='tel'
+              label='Telephone number'
+              value={this.state.h_tel}
+              error={this.state.err_tel}
+              onChangeText={this.handleTelChange}
+              tintColor={color.APP_THEME}
+              containerStyle={styles.container}
+              keyboardType='phone-pad'
+            />
+          </View>
+          <View style={styles.btn_container}>
+            <Button
+              title='Save'
+              onPress={this.handleBtnPress}
+            />
+          </View>
+        </ScrollView>
       </View>
     );
   }

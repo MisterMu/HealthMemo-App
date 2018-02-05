@@ -3,9 +3,12 @@ import color from '../../../config/color';
 import metrics from '../../../config/metrics';
 
 const styles = StyleSheet.create({
+  host: {
+    flex: 1
+  },
   app_bar: {
     width: '100%',
-    height: 56,
+    height: metrics.APP_BAR_HEIGHT,
     backgroundColor: color.APP_THEME,
     elevation: 2,
     position: 'relative'
@@ -32,8 +35,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center'
   },
   form_container: {
-    padding: 16,
-
+    padding: 16
   },
   container: {
     width: metrics.DEVICE_WIDTH * 0.5,
@@ -42,7 +44,8 @@ const styles = StyleSheet.create({
   },
   btn_container: {
     width: metrics.DEVICE_WIDTH * 0.5,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    marginBottom: 25
   }
 });
 
