@@ -7,13 +7,15 @@ import {
   FlatList,
   TouchableOpacity,
   StyleSheet,
-  Image
+  Image,
+  View
 } from 'react-native';
 
 import { HospitalForm } from '../components/list_form/h_form';
 import { ListItem } from '../components/list_item';
 import metrics from '../../config/metrics';
 import { getIcon } from '../../assets/icons';
+import { InsuranceForm } from '../components/list_form/i_form';
 
 export class HospitalInfoScreen extends React.Component {
   constructor (props) {
@@ -63,6 +65,44 @@ export class HospitalInfoScreen extends React.Component {
     );
   }
 
+  iListPress = (index) => {
+    this.setState({i_form: index});
+  }
+
+  iAddList = () => {
+    let tmp = this.state.i_list;
+    tmp.push({company: '', i_name: '', i_num: '', a_name: '', a_tel: ''});
+    this.setState({i_list: tmp, i_form: tmp.length - 1});
+  }
+
+  iDone = (data) => {
+    let tmp = this.state.i_list;
+    tmp[this.state.i_form] = data;
+    this.setState({i_form: -1, i_list: tmp});
+  }
+
+  iFormClose = () => {
+    let tmp = this.state.i_list;
+    if (tmp[this.state.i_form].name == '') {
+      tmp.pop();
+    }
+    this.setState({i_form: -1, i_list: tmp});
+  }
+
+  iGetForm = (index) => {
+    return (
+      <InsuranceForm
+        company={this.state.i_list[index]? this.state.i_list[index].company : null}
+        name={this.state.i_list[index]? this.state.i_list[index].i_name :null}
+        num={this.state.i_list[index]? this.state.i_list[index].i_num : null}
+        a_name={this.state.i_list[index]? this.state.i_list[index].a_name : null}
+        a_tel={this.state.i_list[index]? this.state.i_list[index].a_tel : null}
+        done={this.iDone}
+        back={this.iFormClose}
+      />
+    );
+  }
+
   componentWillMount () {
     AsyncStorage.multiGet(['hospital', 'insurance']).then((data) => {
       let h_list = data[0][1]? JSON.parse(data[0][1]) : [];
@@ -75,8 +115,12 @@ export class HospitalInfoScreen extends React.Component {
     let h_list_tmp = this.state.h_list.map((item, index) => {
       return {title: item.name, key: index}
     });
+    let i_list_tmp = this.state.i_list.map((item, index) => {
+      return {title: item.i_name, key: index}
+    });
     return (
       <ScrollView style={styles.host}>
+        {/* hospital form */}
         <Modal
           onRequestClose={this.hFormClose}
           visible={this.state.h_form >= 0}
@@ -84,17 +128,44 @@ export class HospitalInfoScreen extends React.Component {
         >
           {this.hGetForm(this.state.h_form)}
         </Modal>
-        <Text style={styles.title}>Hospital</Text>
-        <FlatList
-          renderItem={({item}) => <ListItem title={item.title} action={() => this.hListPress(item.key)}/>}
-          data={h_list_tmp}
-        />
-        <TouchableOpacity style={styles.add} onPress={this.hAddList}>
-          <Image style={styles.add_icon} source={getIcon('add_b')}/>
-          <Text style={styles.add_label}>Add Hospital</Text>
-        </TouchableOpacity>
+        {/* insurance form */}
+        <Modal
+          onRequestClose={this.iFormClose}
+          visible={this.state.i_form >= 0}
+          transparent={false}
+        >
+          {this.iGetForm(this.state.i_form)}
+        </Modal>
+        {/* hospital list */}
+        <View>
+          <Text style={styles.title}>Hospital</Text>
+          <FlatList
+            renderItem={({item}) => <ListItem title={item.title} action={() => this.hListPress(item.key)}/>}
+            data={h_list_tmp}
+          />
+          <TouchableOpacity style={styles.add} onPress={this.hAddList}>
+            <Image style={styles.add_icon} source={getIcon('add_b')}/>
+            <Text style={styles.add_label}>Add Hospital</Text>
+          </TouchableOpacity>
+        </View>
+        {/* insurance list */}
+        <View>
+          <Text style={styles.title}>Insurance</Text>
+          <FlatList
+            renderItem={({item}) => <ListItem title={item.title} action={() => this.iListPress(item.key)}/>}
+            data={i_list_tmp}
+          />
+          <TouchableOpacity style={styles.add} onPress={this.iAddList}>
+            <Image style={styles.add_icon} source={getIcon('add_b')}/>
+            <Text style={styles.add_label}>Add Insurance</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     );
+  }
+
+  componentWillUnmount () {
+    AsyncStorage.multiSet([['hospital', JSON.stringify(this.state.h_list)], ['insurance', JSON.stringify(this.state.i_list)]]);
   }
 }
 
