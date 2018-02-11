@@ -45,7 +45,6 @@ export class Sidebar extends React.Component {
         <View style={styles.list}>
           <ItemNav onPress={this.props.nav} route='Dashboard'/>
           <ItemNav onPress={this.props.nav} route='Profile'/>
-          <ItemNav onPress={this.props.nav} route='Setup Device'/>
           <ItemNav onPress={this.props.nav} route='Suggestion'/>
           <ItemNav onPress={this.props.nav} route='Hospital Information'/>
           <ItemNav onPress={this.props.nav} route='Emergency Contact'/>
