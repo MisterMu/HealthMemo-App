@@ -4,7 +4,8 @@ import {
   Text,
   StyleSheet,
   TouchableWithoutFeedback,
-  AsyncStorage
+  AsyncStorage,
+  ActivityIndicator
 } from 'react-native';
 
 import metrics from '../../config/metrics';
@@ -13,7 +14,6 @@ export class DashboardScreen extends React.Component {
   constructor (props) {
     super (props);
     this.state = {
-      ble: false,
       weight: 0,
       height: 0
     };
@@ -34,13 +34,25 @@ export class DashboardScreen extends React.Component {
     console.log('dashboard');
     let bmi = this.state.weight / Math.pow((this.state.height / 100), 2);
     bmi = bmi.toFixed(2);
+    let ble_status = '', ble_text = '';
+    if (this.props.ble === 'nc') {
+      ble_status = 'grey';
+      ble_text = 'Not connect';
+    } else if (this.props.ble === 'sc') {
+      ble_text = 'Connecting...';
+    } else if (this.props.ble === 'cn') {
+      ble_status = 'lightgreen';
+      ble_text = 'Connected'
+    }
     return (
       <View style={styles.host}>
         <TouchableWithoutFeedback onPress={() => this.props.nav('Setup Device')}>
           <View style={styles.card}>
-            <View style={[styles.light, {backgroundColor: (this.state.ble)? 'lightgreen' : 'grey'}]}/>
-            <Text style={styles.card_title}>Device Name</Text>
-            <Text style={styles.card_status}>not connected</Text>
+            {(this.props.ble === 'sc')? 
+              <ActivityIndicator style={styles.indicator}/>:
+              <View style={[styles.light, {backgroundColor: ble_status}]}/>
+            }
+            <Text style={styles.card_title}>{ble_text}</Text>
           </View>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={() => this.props.nav('Profile')}>
@@ -76,23 +88,25 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: 'white',
     elevation: 2,
-    padding: 8,
+    padding: 16,
     position: 'relative',
     marginBottom: 8
+  },
+  indicator: {
+    position: 'absolute',
+    top: 18,
+    left: 16
   },
   light: {
     width: 14,
     height: 14,
     borderRadius: 7,
     position: 'absolute',
-    top: 24,
+    top: 22,
     left: 16
   },
   card_title: {
     fontSize: metrics.FONT_SIZE,
-    marginLeft: 36
-  },
-  card_status: {
     marginLeft: 36
   },
   info: {
