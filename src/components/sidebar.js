@@ -12,6 +12,7 @@ import {
 import { getIcon } from '../../assets/icons';
 import color from '../../config/color';
 import metrics from '../../config/metrics';
+import sensor from '../../assets/values/sensor';
 
 export class Sidebar extends React.Component {
   constructor (props) {
@@ -30,6 +31,9 @@ export class Sidebar extends React.Component {
   }
 
   render () {
+    let tmp = sensor.SENSOR_NAME.map((item, index) => {
+      return <ItemNav onPress={this.props.nav} route={item} key={index}/>
+    });
     return (
       <View style={styles.host}>
         <TouchableWithoutFeedback onPress={this.navToProfile}>
@@ -45,6 +49,7 @@ export class Sidebar extends React.Component {
         <View style={styles.list}>
           <ItemNav onPress={this.props.nav} route='Dashboard'/>
           <ItemNav onPress={this.props.nav} route='Profile'/>
+          {tmp}
           <ItemNav onPress={this.props.nav} route='Suggestion'/>
           <ItemNav onPress={this.props.nav} route='Hospital Information'/>
           <ItemNav onPress={this.props.nav} route='Emergency Contact'/>
