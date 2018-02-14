@@ -3,7 +3,7 @@ import {
   View,
   DrawerLayoutAndroid,
   StyleSheet,
-  Button
+  Text
 } from 'react-native';
 import { BleManager } from 'react-native-ble-plx';
 
@@ -16,13 +16,15 @@ import {
   SuggestionScreen,
   SettingScreen,
   HospitalInfoScreen,
-  EmergencyContactScreen
+  EmergencyContactScreen,
+  SensorScreen
 } from './';
 import metrics from '../../config/metrics';
+import sensor from '../../assets/values/sensor';
 
 const DEVICE_ID = '30:AE:A4:19:84:36';
-const SERVICE = '000000FF-0000-1000-8000-00805F9B34fb';
-const CHARACTERISTIC = '0000FF01-0000-1000-8000-00805F9B34fb';
+const SERVICE = '000000ff-0000-1000-8000-00805f9b34fb';
+const CHARACTERISTIC = '0000ff01-0000-1000-8000-00805f9b34fb';
 
 export class Container extends React.Component {
   constructor (props) {
@@ -30,23 +32,33 @@ export class Container extends React.Component {
     this.manager = new BleManager();
     this.state = {
       route: 'Dashboard',
-      ble_connect: 'sc'   /* sc = scan and connecting, nc = not connect, cn = connected */
+      sensor_chars: null,
+      ble_connect: 'nc'   /* sc = scan and connecting, nc = not connect, cn = connected */
     };
   }
 
   scanAndConnect = () => {
+    this.setState({ble_connect: 'sc'})
     this.manager.startDeviceScan(null, null, (err, device) => {
       if (err) {
         console.error(err);
       } else {
         if (device.id === DEVICE_ID) {
           this.manager.stopDeviceScan();
-          console.log('BLE success!!');
-          device.connect().then(() => {
-            console.log(device.serviceUUIDs)
-            this.setState({ble_connect: true});
-            this.manager.readCharacteristicForDevice(device.id, SERVICE, CHARACTERISTIC).then((characteristic) => {
-              console.log(characteristic.value);
+          device.connect()
+          .then((device) => {
+            return device.discoverAllServicesAndCharacteristics()
+          })
+          .then((device) => {
+            return device.services();
+          })
+          .then((services) => {
+            services.map((service) => {
+              if (service.uuid === SERVICE) {
+                service.characteristics().then((characteristics) => {
+                  this.setState({sensor_chars: characteristics, ble_connect: 'cn'});
+                });
+              }
             });
           });
         }
@@ -55,6 +67,7 @@ export class Container extends React.Component {
   }
 
   componentWillMount () {
+    console.log('container')
     const subscription = this.manager.onStateChange((state) => {
       if (state === 'PoweredOn') {
         this.scanAndConnect();
@@ -79,6 +92,16 @@ export class Container extends React.Component {
       screen = <SettingScreen/>;
     } else if (this.state.route === 'Emergency Call') { 
       screen = <EmergencyCallScreen/>;
+    } else {
+      // if (this.state.sensor_chars) {
+        screen = <SensorScreen index={sensor.SENSOR_NAME.indexOf(this.state.route)} ble={this.state.sensor_chars}/>;
+      // } else {
+      //   screen = (
+      //     <View style={{flex: 1, justifyContent: 'center'}}>
+      //       <Text style={{width: '100%', textAlign: 'center'}}>Please connect your device first.</Text>
+      //     </View>
+      //   )
+      // }
     }
     return (
       <DrawerLayoutAndroid
