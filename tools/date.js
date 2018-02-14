@@ -29,3 +29,15 @@ export function getFullFormat (date) {
     return '';
   }
 }
+
+export function getNumDayOfMonth (number) {
+  if (number < 0 || number > 11) {
+    return 0;
+  } else if (number === 1) {
+    return 29;
+  } else if ([3, 5, 8, 10].includes(number)) {
+    return 30;
+  } else {
+    return 31;
+  }
+}
