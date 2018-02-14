@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 
 import { HospitalForm } from '../components/list_form/h_form';
-import { ListItem } from '../components/list_item';
+import { ListItem } from '../components';
 import metrics from '../../config/metrics';
 import { getIcon } from '../../assets/icons';
 import { InsuranceForm } from '../components/list_form/i_form';

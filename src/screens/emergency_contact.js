@@ -11,7 +11,7 @@ import {
   SectionList
 } from 'react-native';
 import { EmergencyForm } from '../components/list_form/ec_form';
-import { ListItem } from '../components/list_item';
+import { ListItem } from '../components';
 import metrics from '../../config/metrics';
 import { getIcon } from '../../assets/icons/index';
 
