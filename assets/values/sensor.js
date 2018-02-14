@@ -1,19 +1,19 @@
 const SENSOR_NAME = [
-  'Sensor 1',
-  'Sensor 2',
-  'Sensor 3'
+  'Oxymeter',
+  'Heart rate',
+  'Temperature'
 ];
 
 const SENSOR_UNIT = [
-  'mu',
-  'mu',
-  'mu'
+  '%SpO2',
+  'rpm',
+  '°C'
 ]
 
 const SENSOR_COLOR = [
-  'red',
-  'blue',
-  'yellow'
+  'rgb(71, 147, 199)',
+  'rgb(223, 81, 80)',
+  'rgb(240, 207, 80)'
 ]
 
 export default {
