@@ -28,7 +28,15 @@ export default class App extends React.Component {
             D: [],
             W: [],
             M: [],
-            Y: []
+            Y: [],
+            lastUpdate: {
+              value: 0,
+              date: new Date()
+            },
+            lastMeasure: {
+              value: 0,
+              date: new Date()
+            }
           }
           sensor_object.D.length = 24;
           sensor_object.D.fill(0);
