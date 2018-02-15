@@ -3,7 +3,8 @@ import {
   View,
   DrawerLayoutAndroid,
   StyleSheet,
-  Text
+  Text,
+  ToastAndroid
 } from 'react-native';
 import { BleManager } from 'react-native-ble-plx';
 
@@ -37,49 +38,71 @@ export class Container extends React.Component {
     };
   }
 
+  openSidebar = () => {
+    console.log('open sidebar');
+    this.refs.sidebar.openDrawer();
+  }
+
+  navigateTo = (routeName) => {
+    console.log('navigate to', routeName);
+    this.setState({ route: routeName });
+    this.refs.sidebar.closeDrawer();
+  }
+
   scanAndConnect = () => {
-    this.setState({ble_connect: 'sc'})
-    this.manager.startDeviceScan(null, null, (err, device) => {
-      if (err) {
-        console.error(err);
-      } else {
-        if (device.id === DEVICE_ID) {
-          this.manager.stopDeviceScan();
-          device.connect()
-          .then((device) => {
-            return device.discoverAllServicesAndCharacteristics()
-          })
-          .then((device) => {
-            return device.services();
-          })
-          .then((services) => {
-            services.map((service) => {
-              if (service.uuid === SERVICE) {
-                service.characteristics().then((characteristics) => {
-                  this.setState({sensor_chars: characteristics, ble_connect: 'cn'});
+    this.manager.state().then((state) => {
+      if (state === 'PoweredOn') {
+        this.setState({ble_connect: 'sc'})
+        this.manager.startDeviceScan(null, null, (err, device) => {
+          if (err) {
+            console.error(err);
+          } else {
+            if (device.id === DEVICE_ID) {
+              this.manager.stopDeviceScan();
+              device.connect()
+              .then((device) => {
+                return device.discoverAllServicesAndCharacteristics()
+              })
+              .then((device) => {
+                return device.services();
+              })
+              .then((services) => {
+                services.map((service) => {
+                  if (service.uuid === SERVICE) {
+                    service.characteristics().then((characteristics) => {
+                      this.setState({sensor_chars: characteristics, ble_connect: 'cn'});
+                    });
+                  }
                 });
-              }
-            });
-          });
-        }
+              });
+            }
+          }
+        });
+      } else {
+        ToastAndroid.show('Bluetooth must be turned on first.', ToastAndroid.LONG);
       }
     });
   }
 
+  disconnectBle = () => {
+    this.manager.cancelDeviceConnection(DEVICE_ID);
+  }
+
   componentWillMount () {
-    console.log('container')
-    const subscription = this.manager.onStateChange((state) => {
-      if (state === 'PoweredOn') {
-        this.scanAndConnect();
-        subscription.remove();
-      }
-    }, true);
+    const subscription = this.manager.onDeviceDisconnected(DEVICE_ID, (err, device) => {
+      this.setState({ble_connect: 'nc', sensor_chars: null});
+      subscription.remove();
+    });
   }
 
   render () {
     let screen = {};
     if (this.state.route === 'Dashboard') {
-      screen = <DashboardScreen nav={this.navigateTo} ble={this.state.ble_connect}/>;
+      let cmd = {
+        cn: this.scanAndConnect,
+        dc: this.disconnectBle
+      }
+      screen = <DashboardScreen nav={this.navigateTo} ble={this.state.ble_connect} ble_action={cmd}/>;
     } else if (this.state.route === 'Profile') {
       screen = <ProfileScreen nav={this.navigateTo}/>;
     } else if (this.state.route === 'Hospital Information') {
@@ -93,15 +116,12 @@ export class Container extends React.Component {
     } else if (this.state.route === 'Emergency Call') { 
       screen = <EmergencyCallScreen/>;
     } else {
-      // if (this.state.sensor_chars) {
+      if (this.state.sensor_chars) {
         screen = <SensorScreen index={sensor.SENSOR_NAME.indexOf(this.state.route)} ble={this.state.sensor_chars}/>;
-      // } else {
-      //   screen = (
-      //     <View style={{flex: 1, justifyContent: 'center'}}>
-      //       <Text style={{width: '100%', textAlign: 'center'}}>Please connect your device first.</Text>
-      //     </View>
-      //   )
-      // }
+      } else {
+        ToastAndroid.show('Please connect your device first.', ToastAndroid.LONG);
+        this.setState({route: 'Dashboard'});
+      }
     }
     return (
       <DrawerLayoutAndroid
@@ -125,14 +145,7 @@ export class Container extends React.Component {
     );
   }
 
-  openSidebar = () => {
-    console.log('open sidebar');
-    this.refs.sidebar.openDrawer();
-  }
-
-  navigateTo = (routeName) => {
-    console.log('navigate to', routeName);
-    this.setState({ route: routeName });
-    this.refs.sidebar.closeDrawer();
+  componentWillUnmount () {
+    
   }
 }

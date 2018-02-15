@@ -3,12 +3,16 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableWithoutFeedback,
+  TouchableOpacity,
   AsyncStorage,
-  ActivityIndicator
+  ActivityIndicator,
+  ToastAndroid,
+  ScrollView
 } from 'react-native';
 
 import metrics from '../../config/metrics';
+import sensor from '../../assets/values/sensor';
+import { SensorCard } from '../components/sesnsor_card';
 
 export class DashboardScreen extends React.Component {
   constructor (props) {
@@ -17,6 +21,22 @@ export class DashboardScreen extends React.Component {
       weight: 0,
       height: 0
     };
+  }
+
+  sensorCardPress = (name) => {
+    if (this.props.ble === 'cn') {
+      this.props.nav(name);
+    } else {
+      ToastAndroid.show('Please connect your device first.', ToastAndroid.LONG);
+    }
+  }
+
+  bleCardPress = () => {
+    if (this.props.ble === 'nc') {
+      this.props.ble_action.cn();
+    } else if (this.props.ble === 'cn') {
+      this.props.ble_action.dc();
+    }
   }
 
   componentDidMount () {
@@ -44,9 +64,16 @@ export class DashboardScreen extends React.Component {
       ble_status = 'lightgreen';
       ble_text = 'Connected'
     }
+    let sensor_cards = sensor.SENSOR_NAME.map((name, index) => {
+      return (
+        <TouchableOpacity style={{paddingBottom: 16}} key={index} onPress={() => this.sensorCardPress(name)}>
+          <SensorCard index={index}/>
+        </TouchableOpacity>
+      );
+    });
     return (
-      <View style={styles.host}>
-        <TouchableWithoutFeedback onPress={() => this.props.nav('Setup Device')}>
+      <ScrollView style={styles.host}>
+        <TouchableOpacity onPress={this.bleCardPress} disabled={this.props.ble === 'sc'}>
           <View style={styles.card}>
             {(this.props.ble === 'sc')? 
               <ActivityIndicator style={styles.indicator}/>:
@@ -54,8 +81,8 @@ export class DashboardScreen extends React.Component {
             }
             <Text style={styles.card_title}>{ble_text}</Text>
           </View>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => this.props.nav('Profile')}>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.nav('Profile')}>
           <View style={styles.card}>
             <View style={styles.info}>
               <Text style={styles.label}>Weight</Text>
@@ -70,8 +97,9 @@ export class DashboardScreen extends React.Component {
               <Text style={styles.value}>{bmi}</Text>
             </View>
           </View>
-        </TouchableWithoutFeedback>
-      </View>
+        </TouchableOpacity>
+        {sensor_cards}
+      </ScrollView>
     );
   }
 
@@ -87,7 +115,7 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: 'white',
-    elevation: 2,
+    elevation: 4,
     padding: 16,
     position: 'relative',
     marginBottom: 8
