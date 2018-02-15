@@ -17,6 +17,18 @@ export function getMonthOfYear (date) {
   }
 }
 
+export function getDateFormat (date) {
+  if (date instanceof Date) {
+    return [
+      date.getDate(),
+      date.getMonth() + 1,
+      date.getFullYear()
+    ].join('/');
+  } else {
+    return '';
+  }
+}
+
 export function getFullFormat (date) {
   if (date instanceof Date) {
     return [
