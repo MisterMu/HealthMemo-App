@@ -1,10 +1,12 @@
 import React from 'react';
-import { View, Button } from 'react-native';
+import { View, Button, TouchableOpacity, Text, Image } from 'react-native';
 import { TextField } from 'react-native-material-textfield';
+import ImagePicker from 'react-native-image-crop-picker';
 
 import styles from './styles';
 import color from '../../../config/color';
 import error_messages from '../../../assets/values/error_messages';
+import metrics from '../../../config/metrics';
 
 export class RegisterForm1 extends React.Component {
   constructor(props) {
@@ -13,8 +15,20 @@ export class RegisterForm1 extends React.Component {
       f_name: this.props.f_name || '',
       l_name: this.props.l_name || '',
       err_f_name: '',
-      err_l_name: ''
+      err_l_name: '',
+      img_src: this.props.img_src || null
     };
+  }
+
+  uploadImg = () => {
+    ImagePicker.openPicker({
+      width: 400,
+      height: 400,
+      cropping: true
+    }).then((img) => {
+      console.log(img);
+      this.setState({img_src: img.path});
+    }).catch();
   }
 
   handleFnameChange = (name) => {
@@ -43,7 +57,8 @@ export class RegisterForm1 extends React.Component {
     if (this.state.f_name !== '' && this.state.l_name !== '') {
       let data = {
         f_name: this.state.f_name,
-        l_name: this.state.l_name
+        l_name: this.state.l_name,
+        img_src: this.state.img_src
       }
       this.props.next(data);
     } else {
@@ -56,9 +71,29 @@ export class RegisterForm1 extends React.Component {
     return (
       <View style={styles.host}>
         <View style={styles.form_container}>
-          <View style={styles.img_container}>
-            {/* TODO: add image that get from google signin */}
-          </View>
+          <TouchableOpacity style={styles.img_container} onPress={this.uploadImg}>
+          <Image
+            source={{ uri: this.state.img_src}}
+            style={{height: '100%', width: '100%', position: 'relative'}}
+            resizeMode='cover'
+          />
+            {
+              (this.state.img_src)?
+                null :
+                <Text
+                  style={{
+                    color: 'white',
+                    width: '100%',
+                    height: '100%',
+                    textAlign: 'center',
+                    textAlignVertical: 'center',
+                    fontSize: metrics.FONT_SIZE
+                  }}
+                >
+                  Upload
+                </Text>
+            }
+          </TouchableOpacity>
           <TextField
             label='First Name'
             value={this.state.f_name}

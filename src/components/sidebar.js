@@ -18,14 +18,15 @@ export class Sidebar extends React.Component {
   constructor (props) {
     super (props);
     this.state = {
-      name: ''
+      name: '',
+      img_src: null
     }
   }
 
   componentDidMount () {
     AsyncStorage.getItem('user_info').then((data) => {
       if (data) {
-        this.setState({ name: JSON.parse(data).f_name + ' ' + JSON.parse(data).l_name });
+        this.setState({ name: JSON.parse(data).f_name + ' ' + JSON.parse(data).l_name, img_src: JSON.parse(data).img_src });
       }
     }).catch(err => consoler.error(err));
   }
@@ -38,7 +39,17 @@ export class Sidebar extends React.Component {
       <View style={styles.host}>
         <TouchableWithoutFeedback onPress={this.navToProfile}>
           <View style={styles.profile}>
-            <View style={styles.img}/>
+            <View style={styles.img}>
+              <Image
+                source={{uri: this.state.img_src}}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  position: 'relative'
+                }}
+                resizeMode='cover'
+              />
+            </View>
             <View style={styles.name}>
               <Text style={styles.name_txt}>
                 {this.state.name}
@@ -96,7 +107,8 @@ const styles = StyleSheet.create({
     height: 64,
     borderRadius: 32,
     backgroundColor: 'red',
-    marginBottom: 16
+    marginBottom: 16,
+    overflow: 'hidden'
   },
   name: {
     width: '100%'

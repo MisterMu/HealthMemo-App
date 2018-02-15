@@ -56,6 +56,7 @@ export class RegisterScreen extends React.Component {
             next={this.nextStage}
             f_name={data.f_name}
             l_name={data.l_name}
+            img_src={data.img_src}
           />
         </Modal>
         <Modal

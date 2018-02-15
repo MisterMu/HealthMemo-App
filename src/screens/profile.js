@@ -7,9 +7,12 @@ import {
   Picker,
   Keyboard,
   DatePickerAndroid,
-  Button
+  Button,
+  TouchableOpacity,
+  Image
 } from 'react-native';
 import { TextField } from 'react-native-material-textfield';
+import ImagePicker from 'react-native-image-crop-picker';
 
 import * as DateTool from '../../tools/date';
 import color from '../../config/color';
@@ -26,8 +29,19 @@ export class ProfileScreen extends React.Component {
       region: '',
       weight: '',
       height: '',
-      blood_type: ''
+      blood_type: '',
+      img_src: null
     };
+  }
+
+  uploadImg = () => {
+    ImagePicker.openPicker({
+      width: 400,
+      height: 400,
+      cropping: true
+    }).then(image => {
+      this.setState({img_src: img.path});
+    });
   }
 
   handleTextChange = (text, state) => {
@@ -61,7 +75,8 @@ export class ProfileScreen extends React.Component {
         region: this.state.region,
         weight: this.state.weight,
         height: this.state.height,
-        blood_type: this.state.blood_type
+        blood_type: this.state.blood_type,
+        img_src: this.state.img_src
       }
       AsyncStorage.setItem('user_info', JSON.stringify(tmp)).then(() => {
         this.props.nav('Dashboard');
@@ -91,7 +106,8 @@ export class ProfileScreen extends React.Component {
           region: user.region,
           weight: user.weight,
           height: user.height,
-          blood_type: user.blood_type
+          blood_type: user.blood_type,
+          img_src: user.img_src
         })
       }
     }).catch(err => console.error(err));
@@ -101,7 +117,13 @@ export class ProfileScreen extends React.Component {
     return (
       <ScrollView>
         <View style={styles.host}>
-          <View style={styles.img}/>
+          <TouchableOpacity style={styles.img} onPress={this.uploadImg}>
+            <Image
+              source={{ uri: this.state.img_src}}
+              style={{height: '100%', width: '100%', position: 'relative'}}
+              resizeMode='cover'
+            />
+          </TouchableOpacity>
           <TextField
             label='First Name'
             value={this.state.f_name}
@@ -194,7 +216,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: metrics.DEVICE_WIDTH * 0.3,
     height: metrics.DEVICE_WIDTH * 0.3,
-    borderRadius: metrics.DEVICE_WIDTH * 0.15
+    borderRadius: metrics.DEVICE_WIDTH * 0.15,
+    overflow: 'hidden'
   },
   container: {
     width: metrics.DEVICE_WIDTH * 0.5,

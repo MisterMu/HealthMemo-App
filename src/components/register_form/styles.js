@@ -27,7 +27,8 @@ const styles = StyleSheet.create({
     borderRadius: metrics.DEVICE_WIDTH * IMG_BORDER_RADIUS,
     alignSelf: 'center',
     marginBottom: 15,
-    backgroundColor: 'red'
+    backgroundColor: 'red',
+    overflow: 'hidden'
   },
   container: {
     width: metrics.DEVICE_WIDTH * COMP_WIDTH_RATIO,
