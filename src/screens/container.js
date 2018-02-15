@@ -86,6 +86,7 @@ export class Container extends React.Component {
 
   disconnectBle = () => {
     this.manager.cancelDeviceConnection(DEVICE_ID);
+    this.setState({ble_connect: 'nc'});
   }
 
   componentWillMount () {
@@ -97,11 +98,11 @@ export class Container extends React.Component {
 
   render () {
     let screen = {};
+    let cmd = {
+      cn: this.scanAndConnect,
+      dc: this.disconnectBle
+    }
     if (this.state.route === 'Dashboard') {
-      let cmd = {
-        cn: this.scanAndConnect,
-        dc: this.disconnectBle
-      }
       screen = <DashboardScreen nav={this.navigateTo} ble={this.state.ble_connect} ble_action={cmd}/>;
     } else if (this.state.route === 'Profile') {
       screen = <ProfileScreen nav={this.navigateTo}/>;
@@ -120,7 +121,7 @@ export class Container extends React.Component {
         screen = <SensorScreen index={sensor.SENSOR_NAME.indexOf(this.state.route)} ble={this.state.sensor_chars}/>;
       } else {
         ToastAndroid.show('Please connect your device first.', ToastAndroid.LONG);
-        this.setState({route: 'Dashboard'});
+        screen = <DashboardScreen nav={this.navigateTo} ble={this.state.ble_connect} ble_action={cmd}/>
       }
     }
     return (

@@ -34,7 +34,7 @@ export class DashboardScreen extends React.Component {
   bleCardPress = () => {
     if (this.props.ble === 'nc') {
       this.props.ble_action.cn();
-    } else if (this.props.ble === 'cn') {
+    } else if (this.props.ble === 'cn' || this.props.ble === 'sc') {
       this.props.ble_action.dc();
     }
   }
@@ -73,7 +73,7 @@ export class DashboardScreen extends React.Component {
     });
     return (
       <ScrollView style={styles.host}>
-        <TouchableOpacity onPress={this.bleCardPress} disabled={this.props.ble === 'sc'}>
+        <TouchableOpacity onPress={this.bleCardPress}>
           <View style={styles.card}>
             {(this.props.ble === 'sc')? 
               <ActivityIndicator style={styles.indicator}/>:
