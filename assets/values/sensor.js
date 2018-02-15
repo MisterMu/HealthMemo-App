@@ -6,7 +6,7 @@ const SENSOR_NAME = [
 
 const SENSOR_UNIT = [
   '%SpO2',
-  'rpm',
+  'BPM',
   '°C'
 ]
 
