@@ -49,9 +49,12 @@ export class SensorScreen extends React.Component {
     tmp.Y[date.getMonth()] = Math.round(findMean(tmp.M));
     tmp.lastMeasure = {
       date: tmp.lastUpdate || date,
+      value: tmp.lastUpdate.value || this.state.value
+    }
+    tmp.lastUpdate = {
+      date: date,
       value: this.state.value
     }
-    tmp.lastUpdate = date;
     AsyncStorage.setItem(sensor.SENSOR_NAME[this.props.index], JSON.stringify(tmp));
     this.setState({data: tmp});
   }
