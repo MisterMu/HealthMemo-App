@@ -5,6 +5,5 @@ export * from './emergency_call';
 export * from './profile';
 export * from './sensor';
 export * from './suggestion';
-export * from './setting';
 export * from './hospital_info';
 export * from './emergency_contact';
