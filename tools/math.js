@@ -7,5 +7,5 @@ export function findSum (arr) {
 }
 
 export function findMean (arr) {
-  return findSum(arr) / arr.lenght; 
+  return findSum(arr) / arr.length; 
 }
