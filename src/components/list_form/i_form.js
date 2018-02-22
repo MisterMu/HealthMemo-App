@@ -5,7 +5,8 @@ import {
   TouchableOpacity,
   Image,
   Button,
-  ScrollView
+  ScrollView,
+  Alert
 } from 'react-native';
 import { TextField } from 'react-native-material-textfield';
 
@@ -139,6 +140,17 @@ export class InsuranceForm extends React.Component {
     }
   }
 
+  handleDelBtnPress = () => {
+    Alert.alert(
+      'Delete ' + this.props.name + ' info',
+      'Are you sure?',
+      [
+        {text: 'Cancel'},
+        {text: 'Delete', onPress: this.props.del}
+      ]
+    );
+  }
+
   render () {
     return (
       <View style={styles.host}>
@@ -207,10 +219,20 @@ export class InsuranceForm extends React.Component {
           </View>
           <View style={styles.btn_container}>
             <Button
-              title='Save'
+              title='SAVE'
               onPress={this.handleBtnPress}
             />
           </View>
+          {
+            (this.props.name)?
+              <View style={styles.btn_container}>
+                <Button
+                  title='DELETE'
+                  onPress={this.handleDelBtnPress}
+                  color='red'
+                />
+              </View> : null
+          }
         </ScrollView>
       </View>
     );

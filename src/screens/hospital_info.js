@@ -38,10 +38,18 @@ export class HospitalInfoScreen extends React.Component {
     this.setState({h_list: tmp, h_form: tmp.length - 1});
   }
 
+  hDelList = (index) => {
+    let tmp = this.state.h_list;
+    tmp.splice(index, 1);
+    this.setState({h_list: tmp, h_form: -1});
+    AsyncStorage.setItem('hospital', JSON.stringify(tmp));
+  }
+
   hDone = (data) => {
     let tmp = this.state.h_list;
     tmp[this.state.h_form] = data;
     this.setState({h_form: -1, h_list: tmp});
+    AsyncStorage.setItem('hospital', JSON.stringify(tmp));
   }
 
   hFormClose = () => {
@@ -59,6 +67,7 @@ export class HospitalInfoScreen extends React.Component {
         num={this.state.h_list[index]? this.state.h_list[index].num : null}
         addr={this.state.h_list[index]? this.state.h_list[index].addr : null}
         tel={this.state.h_list[index]? this.state.h_list[index].tel : null}
+        del={() => this.hDelList(index)}
         done={this.hDone}
         back={this.hFormClose}
       />
@@ -75,10 +84,18 @@ export class HospitalInfoScreen extends React.Component {
     this.setState({i_list: tmp, i_form: tmp.length - 1});
   }
 
+  iDelList = (index) => {
+    let tmp = this.state.i_list;
+    tmp.splice(index, 1);
+    this.setState({i_list: tmp, i_form: -1});
+    AsyncStorage.setItem('insurance', JSON.stringify(tmp));
+  }
+
   iDone = (data) => {
     let tmp = this.state.i_list;
     tmp[this.state.i_form] = data;
     this.setState({i_form: -1, i_list: tmp});
+    AsyncStorage.setItem('insurance', JSON.stringify(tmp));
   }
 
   iFormClose = () => {
@@ -97,6 +114,7 @@ export class HospitalInfoScreen extends React.Component {
         num={this.state.i_list[index]? this.state.i_list[index].i_num : null}
         a_name={this.state.i_list[index]? this.state.i_list[index].a_name : null}
         a_tel={this.state.i_list[index]? this.state.i_list[index].a_tel : null}
+        del={() => this.iDelList(index)}
         done={this.iDone}
         back={this.iFormClose}
       />
