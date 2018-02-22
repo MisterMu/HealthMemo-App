@@ -4,7 +4,8 @@ import {
   DrawerLayoutAndroid,
   StyleSheet,
   Text,
-  ToastAndroid
+  ToastAndroid,
+  BackHandler
 } from 'react-native';
 import { BleManager } from 'react-native-ble-plx';
 
@@ -94,6 +95,14 @@ export class Container extends React.Component {
       this.setState({ble_connect: 'nc', sensor_chars: null});
       subscription.remove();
     });
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      if (this.state.route != 'Dashboard') {
+        this.setState({route: 'Dashboard'});
+      } else {
+        BackHandler.exitApp();
+      }
+      return true;
+    });
   }
 
   render () {
@@ -112,8 +121,6 @@ export class Container extends React.Component {
       screen = <EmergencyContactScreen/>;
     } else if (this.state.route === 'Suggestion') {
       screen = <SuggestionScreen/>;
-    } else if (this.state.route === 'Setting') {
-      screen = <SettingScreen/>;
     } else if (this.state.route === 'Emergency Call') { 
       screen = <EmergencyCallScreen/>;
     } else {
@@ -147,6 +154,6 @@ export class Container extends React.Component {
   }
 
   componentWillUnmount () {
-    
+    BackHandler.removeEventListener('hardwareBackPress');
   }
 }
