@@ -26,9 +26,9 @@ export class SensorScreen extends React.Component {
 
   getDataFromSensor = () => {
     this.props.ble.map((char_tmp) => {
-      if (char_tmp === sensor.SENSOR_NAME[this.props.index]) {
-        char_tmp.read().then((sensor) => {
-          this.setState({value: sensor.value(), disable: false});
+      if (char_tmp.uuid === sensor.CHARACTERISTIC[this.props.index]) {
+        char_tmp.read().then((sens) => {
+          this.setState({value: Number(atob(sens.value)), disable: false});
         })
       }
     });
@@ -36,24 +36,30 @@ export class SensorScreen extends React.Component {
 
   btnPress = () => {
     if (this.props.index === 1) {
-      this.setState({disable: true, time: 30});
-      setTimeout(() => {}, 30000);
+      this.setState({disable: true, time: 20});
+      setTimeout(() => {
+        this.getDataFromSensor();
+      }, 20000);
+    } else {
+      this.setState({disable: true});
+      this.getDataFromSensor();
     }
-    this.setState({disable: true});
-    // this.getDataFromSensor();
+  }
+
+  updateValue = (value) => {
     let date = new Date();
     let tmp = this.state.data;
-    tmp.D[date.getHours() - 1] = this.state.value;
-    tmp.W[date.getDay()] = Math.round(findMean(tmp.D));
-    tmp.M[date.getDate() - 1] = Math.round(findMean(tmp.D));
-    tmp.Y[date.getMonth()] = Math.round(findMean(tmp.M));
+    tmp.D[date.getHours() - 1] = value;
+    tmp.W[date.getDay()] = findMean(tmp.D);
+    tmp.M[date.getDate() - 1] = findMean(tmp.D);
+    tmp.Y[date.getMonth()] = findMean(tmp.M);
     tmp.lastMeasure = {
-      date: tmp.lastUpdate || date,
-      value: tmp.lastUpdate.value || this.state.value
+      date: tmp.lastUpdate.date || date,
+      value: tmp.lastUpdate.value || value
     }
     tmp.lastUpdate = {
       date: date,
-      value: this.state.value
+      value: value
     }
     AsyncStorage.setItem(sensor.SENSOR_NAME[this.props.index], JSON.stringify(tmp));
     this.setState({data: tmp});
@@ -69,9 +75,22 @@ export class SensorScreen extends React.Component {
 
   componentDidMount () {
     AsyncStorage.getItem(sensor.SENSOR_NAME[this.props.index]).then((data) => {
-      console.log(JSON.parse(data));
-      this.setState({data: JSON.parse(data)});
+      this.setState({data: JSON.parse(data), value: 0});
     });
+  }
+
+  componentWillReceiveProps (props) {
+    if (props.index !== this.props.index) {
+      AsyncStorage.getItem(sensor.SENSOR_NAME[props.index]).then((data) => {
+        this.setState({data: JSON.parse(data), value: 0});
+      });
+    }
+  }
+
+  componentDidUpdate (props, state) {
+    if (this.state.value !== state.value) {
+      this.updateValue(this.state.value);
+    }
   }
 
   render () {
