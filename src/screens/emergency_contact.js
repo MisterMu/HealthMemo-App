@@ -29,6 +29,7 @@ export class EmergencyContactScreen extends React.Component {
     let tmp = this.state.list;
     tmp[this.state.form] = data;
     this.setState({form: -1, list: tmp});
+    AsyncStorage.setItem('ec', JSON.stringify(tmp));
   }
 
   handleModalClose = () => {
@@ -45,6 +46,7 @@ export class EmergencyContactScreen extends React.Component {
         name={this.state.list[index]? this.state.list[index].ec_name : ''}
         phone={this.state.list[index]? this.state.list[index].ec_num : ''}
         mail={this.state.list[index]? this.state.list[index].ec_mail : ''}
+        del={() => this.delList(index)}
         done={this._done}
         back={this.handleModalClose}
         disable={this.state.form == 0}
@@ -60,6 +62,13 @@ export class EmergencyContactScreen extends React.Component {
     let tmp = this.state.list;
     tmp.push({ec_name: '', ec_num: '', ec_mail: ''});
     this.setState({list: tmp, form: tmp.length - 1});
+  }
+
+  delList = (index) => {
+    let tmp = this.state.list;
+    tmp.splice(index, 1);
+    this.setState({list: tmp, form: -1});
+    AsyncStorage.setItem('ec', JSON.stringify(tmp));
   }
 
   componentWillMount () {
@@ -95,10 +104,6 @@ export class EmergencyContactScreen extends React.Component {
         </TouchableOpacity>
       </ScrollView>
     );
-  }
-
-  componentWillUnmount () {
-    AsyncStorage.setItem('ec', JSON.stringify(this.state.list));
   }
 }
 
