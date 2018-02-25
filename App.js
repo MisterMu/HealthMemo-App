@@ -1,9 +1,12 @@
 import React from 'react';
-import { AsyncStorage, ActivityIndicator, View } from 'react-native';
+import { AsyncStorage, ActivityIndicator, View, NativeModules, ToastAndroid, Alert } from 'react-native';
+import RNFS from 'react-native-fs';
 
 import { RegisterScreen, DashboardScreen, Container } from './src/screens';
 import sensor from './assets/values/sensor';
 import { getNumDayOfMonth } from './tools/date';
+
+const FilePickerManager = NativeModules.FilePickerManager;
 
 export default class App extends React.Component {
   constructor (props) {
@@ -13,12 +16,40 @@ export default class App extends React.Component {
     };
   }
 
+  importFile = () => {
+    FilePickerManager.launchFileChooser((res) => {
+      if (res.fileName !== 'HM_backup.json') {
+        ToastAndroid.show('backup file name must be HM_backup.json!!', ToastAndroid.LONG);
+        this.importFile();
+      } else {
+        RNFS.readFile(res.path, 'utf8').then((content) => {
+          let tmp = JSON.parse(content);
+          let data = Object.keys(tmp).map((key) => {
+            return [key, JSON.stringify(tmp[key])];
+          });
+          AsyncStorage.multiSet(data, () => {
+            this.setState({render: 'content'});
+            ToastAndroid.show('successfully import backup file', ToastAndroid.LONG);
+          });
+        });
+      }
+    })
+  }
+
   componentDidMount () {
     AsyncStorage.getItem('user_info').then((data) => {
       if (data == null) {
         this.setState({ render: 'register' });
+        Alert.alert(
+          'Have any backup file?',
+          'you can import backup file for use application like your old one.',
+          [
+            {text: 'Never mind', onPress: () => {this.setState({render: 'register'})}},
+            {text: 'Import backup file', onPress: this.importFile}
+          ]
+        )
       } else {
-        this.setState({ user: JSON.parse(data), render: 'content' });
+        this.setState({ render: 'content' });
       }
     }).catch(err => console.error(err));
     AsyncStorage.multiGet(sensor.SENSOR_NAME).then((res) => {
