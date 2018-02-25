@@ -1,10 +1,11 @@
 import React from 'react';
-import { AsyncStorage, ActivityIndicator, View, NativeModules, ToastAndroid, Alert } from 'react-native';
+import { AsyncStorage, ActivityIndicator, View, NativeModules, ToastAndroid, Alert, StatusBar } from 'react-native';
 import RNFS from 'react-native-fs';
 
 import { RegisterScreen, DashboardScreen, Container } from './src/screens';
 import sensor from './assets/values/sensor';
 import { getNumDayOfMonth } from './tools/date';
+import color from './config/color';
 
 const FilePickerManager = NativeModules.FilePickerManager;
 
@@ -92,17 +93,20 @@ export default class App extends React.Component {
   }
 
   render () {
+    let render;
     if (this.state.render === 'register') {
-      return <RegisterScreen done={() => this.setState({render: 'content'})}/>
+      render = <RegisterScreen done={() => this.setState({render: 'content'})}/>
     } else if (this.state.render === 'content') {
-      return <Container/>;
+      render =  <Container/>;
     } else {
-      return (
-        <View style={{flex: 1, justifyContent: 'center'}}>
-          <ActivityIndicator/>
-        </View>
-      );
+      render = <ActivityIndicator/>
     }
+    return (
+      <View style={{flex: 1, justifyContent: 'center'}}>
+        <StatusBar backgroundColor={color.APP_THEME} barStyle='white-content'/>
+        {render}
+      </View>
+    );
   }
 
 }

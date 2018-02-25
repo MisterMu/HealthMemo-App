@@ -83,6 +83,7 @@ export class Sidebar extends React.Component {
           <ItemNav onPress={this.props.nav} route='Dashboard'/>
           <ItemNav onPress={this.props.nav} route='Profile'/>
           {tmp}
+          <ItemNav onPress={this.props.nav} route='Suggestion'/>
           <ItemNav onPress={this.props.nav} route='Hospital Information'/>
           <ItemNav onPress={this.props.nav} route='Emergency Contact'/>
           <ItemNav onPress={this.exportFile} route='Export Backup File'/>
@@ -111,8 +112,7 @@ class ItemNav extends React.Component {
 
 const styles = StyleSheet.create({
   host: {
-    flex: 1,
-    paddingTop: 24
+    flex: 1
   },
   profile: {
     backgroundColor: color.APP_THEME,

@@ -141,7 +141,6 @@ export class Container extends React.Component {
               nav={this.navigateTo}
             />
         )}}
-        statusBarBackgroundColor='rgba(0, 0, 0, 0.3)'
       >
         <Appbar
           title={this.state.route}
