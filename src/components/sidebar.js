@@ -6,13 +6,16 @@ import {
   TouchableWithoutFeedback,
   TouchableNativeFeedback,
   Image,
-  AsyncStorage
+  AsyncStorage,
+  ToastAndroid
 } from 'react-native';
 
 import { getIcon } from '../../assets/icons';
 import color from '../../config/color';
 import metrics from '../../config/metrics';
 import sensor from '../../assets/values/sensor';
+
+import RNFS from 'react-native-fs';
 
 export class Sidebar extends React.Component {
   constructor (props) {
@@ -21,6 +24,25 @@ export class Sidebar extends React.Component {
       name: '',
       img_src: null
     }
+  }
+
+  navToProfile = () => {
+    this.props.nav('Profile');
+  }
+
+  exportFile = () => {
+    let storage = {};
+    AsyncStorage.getAllKeys((err, keys) => {
+      AsyncStorage.multiGet(keys, (err, stores) => {
+        stores.map((result, i, store) => {
+          storage = {...storage, [store[i][0]]: JSON.parse(store[i][1])};
+        });
+        let path = '/storage/emulated/0/Download' + '/HM_backup.json';
+        RNFS.writeFile(path, JSON.stringify(storage), 'utf8').then((success) => {
+          ToastAndroid.show('HM_backup file already save to /download folder', ToastAndroid.LONG);
+        });
+      })
+    })
   }
 
   componentDidMount () {
@@ -61,17 +83,12 @@ export class Sidebar extends React.Component {
           <ItemNav onPress={this.props.nav} route='Dashboard'/>
           <ItemNav onPress={this.props.nav} route='Profile'/>
           {tmp}
-          <ItemNav onPress={this.props.nav} route='Suggestion'/>
           <ItemNav onPress={this.props.nav} route='Hospital Information'/>
           <ItemNav onPress={this.props.nav} route='Emergency Contact'/>
+          <ItemNav onPress={this.exportFile} route='Export Backup File'/>
         </View>
       </View>
     );
-  }
-
-  navToProfile = () => {
-    console.log('nav to profile');
-    this.props.nav('Profile');
   }
 }
 
