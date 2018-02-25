@@ -46,8 +46,15 @@ export default class App extends React.Component {
           sensor_object.M.fill(0);
           sensor_object.Y.length = 12;
           sensor_object.Y.fill(0);
-          console.log(data[0], sensor_object);
           AsyncStorage.setItem(data[0], JSON.stringify(sensor_object));
+        } else {
+          let last_date = new Date(JSON.parse(data[1]).lastUpdate.date);
+          if (last_date.getMonth() != new Date().getMonth() && last_date.getFullYear() != new Date().getFullYear()) {
+            let tmp = JSON.parse(data[1]);
+            tmp.M.length = getNumDayOfMonth(new Date().getMonth());
+            tmp.M.fill(0);
+            AsyncStorage.setItem(data[0], JSON.stringify(tmp));
+          }
         }
       });
     });
