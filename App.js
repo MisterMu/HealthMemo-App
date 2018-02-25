@@ -103,7 +103,7 @@ export default class App extends React.Component {
     }
     return (
       <View style={{flex: 1, justifyContent: 'center'}}>
-        <StatusBar backgroundColor={color.APP_THEME} barStyle='white-content'/>
+        <StatusBar backgroundColor={color.APP_THEME} barStyle='light-content'/>
         {render}
       </View>
     );
