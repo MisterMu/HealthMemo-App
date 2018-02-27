@@ -20,8 +20,8 @@ export function getMonthOfYear (date) {
 export function getDateFormat (date) {
   if (date instanceof Date) {
     return [
-      date.getDate(),
-      date.getMonth() + 1,
+      ((date.getDate() > 9)? '' : '0') + date.getDate(),
+      ((date.getMonth() + 1 > 9)? '' : '0') + (date.getMonth() + 1),
       date.getFullYear()
     ].join('/');
   } else {
