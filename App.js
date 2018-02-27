@@ -4,7 +4,7 @@ import RNFS from 'react-native-fs';
 
 import { RegisterScreen, DashboardScreen, Container } from './src/screens';
 import sensor from './assets/values/sensor';
-import { getNumDayOfMonth } from './tools/date';
+import { getNumDayOfMonth, isToday, isThisWeek, isThisMonth, isThisYear } from './tools/date';
 import color from './config/color';
 
 const FilePickerManager = NativeModules.FilePickerManager;
@@ -81,12 +81,21 @@ export default class App extends React.Component {
           AsyncStorage.setItem(data[0], JSON.stringify(sensor_object));
         } else {
           let last_date = new Date(JSON.parse(data[1]).lastUpdate.date);
-          if (last_date.getMonth() != new Date().getMonth() && last_date.getFullYear() != new Date().getFullYear()) {
-            let tmp = JSON.parse(data[1]);
+          let tmp = JSON.parse(data[1]);
+          if (!isToday(last_date)) {
+            tmp.D.fill(0);
+          }
+          if (!isThisWeek(last_date)) {
+            tmp.W.fill(0);
+          }
+          if (!isThisMonth(last_date)) {
             tmp.M.length = getNumDayOfMonth(new Date().getMonth());
             tmp.M.fill(0);
-            AsyncStorage.setItem(data[0], JSON.stringify(tmp));
           }
+          if (!isThisYear(last_date)) {
+            tmp.Y.fill(0);
+          }
+          AsyncStorage.setItem(data[0], JSON.stringify(tmp));
         }
       });
     });
