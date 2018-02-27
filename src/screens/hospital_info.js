@@ -100,7 +100,7 @@ export class HospitalInfoScreen extends React.Component {
 
   iFormClose = () => {
     let tmp = this.state.i_list;
-    if (tmp[this.state.i_form].name == '') {
+    if (tmp[this.state.i_form].i_name == '') {
       tmp.pop();
     }
     this.setState({i_form: -1, i_list: tmp});
