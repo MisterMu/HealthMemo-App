@@ -1,5 +1,6 @@
 export const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 export const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+export const DAY_TIME = 24 * 60 * 60 * 1000;
 
 export function getDayOfWeek (date) {
   if (date instanceof Date) {
@@ -51,5 +52,39 @@ export function getNumDayOfMonth (number) {
     return 30;
   } else {
     return 31;
+  }
+}
+
+export function isToday (date) {
+  if (date instanceof Date) {
+    return (date.setHours(0, 0, 0, 0) == new Date().setHours(0, 0, 0, 0));
+  } else {
+    return false;
+  }
+}
+
+export function isThisWeek (date) {
+  if (date instanceof Date) {
+    let today = new Date();
+    return ((today - date) / DAY_TIME > 6 - date.getDay());
+  } else {
+    return false;
+  }
+}
+
+export function isThisMonth (date) {
+  if (date instanceof Date) {
+    let today = new Date();
+    return (today.getMonth() === date.getMonth() && today.getFullYear() === date.getFullYear());
+  } else {
+    return false;
+  }
+}
+
+export function isThisYear (date) {
+  if (date instanceof Date) {
+    return (new Date().getFullYear() === date.getFullYear());
+  } else {
+    return false;
   }
 }
