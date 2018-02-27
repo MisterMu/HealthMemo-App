@@ -3,19 +3,18 @@ import {
   View,
   StyleSheet,
   Text,
-  TouchableWithoutFeedback,
-  TouchableNativeFeedback,
+  TouchableOpacity,
   Image,
   AsyncStorage,
-  ToastAndroid
+  ToastAndroid,
+  ScrollView
 } from 'react-native';
+import RNFS from 'react-native-fs';
 
 import { getIcon } from '../../assets/icons';
 import color from '../../config/color';
 import metrics from '../../config/metrics';
 import sensor from '../../assets/values/sensor';
-
-import RNFS from 'react-native-fs';
 
 export class Sidebar extends React.Component {
   constructor (props) {
@@ -59,7 +58,7 @@ export class Sidebar extends React.Component {
     });
     return (
       <View style={styles.host}>
-        <TouchableWithoutFeedback onPress={this.navToProfile}>
+        <TouchableOpacity onPress={this.navToProfile}>
           <View style={styles.profile}>
             <View style={styles.img}>
               <Image
@@ -78,16 +77,17 @@ export class Sidebar extends React.Component {
               </Text>
             </View>
           </View>
-        </TouchableWithoutFeedback>
-        <View style={styles.list}>
+        </TouchableOpacity>
+        <ScrollView style={styles.list}>
           <ItemNav onPress={this.props.nav} route='Dashboard'/>
           <ItemNav onPress={this.props.nav} route='Profile'/>
           {tmp}
           <ItemNav onPress={this.props.nav} route='Suggestion'/>
           <ItemNav onPress={this.props.nav} route='Hospital Information'/>
           <ItemNav onPress={this.props.nav} route='Emergency Contact'/>
+          <ItemNav onPress={this.props.nav} route='Send Email'/>
           <ItemNav onPress={this.exportFile} route='Export Backup File'/>
-        </View>
+        </ScrollView>
       </View>
     );
   }
@@ -96,12 +96,12 @@ export class Sidebar extends React.Component {
 class ItemNav extends React.Component {
   render () {
     return (
-      <TouchableNativeFeedback onPress={this.navToRoute}>
+      <TouchableOpacity onPress={this.navToRoute}>
         <View style={styles.item}>
           <Image source={getIcon(this.props.route)} style={styles.icon}/>
           <Text style={styles.item_name}>{this.props.route}</Text>
         </View>
-      </TouchableNativeFeedback>
+      </TouchableOpacity>
     );
   }
 
