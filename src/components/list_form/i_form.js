@@ -214,7 +214,7 @@ export class InsuranceForm extends React.Component {
               onChangeText={this.handleATelChange}
               tintColor={color.APP_THEME}
               containerStyle={styles.container}
-              keyboardTpye='phone-pad'
+              keyboardType='phone-pad'
             />
           </View>
           <View style={styles.btn_container}>
