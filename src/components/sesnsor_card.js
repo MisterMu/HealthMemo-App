@@ -24,7 +24,6 @@ export class SensorCard extends React.Component {
     AsyncStorage.getItem(sensor.SENSOR_NAME[this.props.index]).then((data) => {
       if (data) {
         let tmp = JSON.parse(data);
-        console.log(sensor.SENSOR_NAME[this.props.index], tmp);
         let date = new Date(tmp.lastMeasure.date);
         this.setState({
           value: tmp.lastUpdate.value,

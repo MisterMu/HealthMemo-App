@@ -27,7 +27,6 @@ export class RegisterScreen extends React.Component {
         data: formData
       });
     } else {
-      // console.log('data from register form', this.state.data);
       AsyncStorage.setItem('user_info', JSON.stringify(this.state.data)).then(() => {
         this.props.done();
       }).catch(err => console.error(err));

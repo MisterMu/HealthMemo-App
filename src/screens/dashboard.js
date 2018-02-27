@@ -51,7 +51,6 @@ export class DashboardScreen extends React.Component {
   }
 
   render () {
-    console.log('dashboard');
     let bmi = this.state.weight / Math.pow((this.state.height / 100), 2);
     bmi = bmi.toFixed(2);
     let ble_status = '', ble_text = '';

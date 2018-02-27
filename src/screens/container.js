@@ -41,12 +41,10 @@ export class Container extends React.Component {
   }
 
   openSidebar = () => {
-    console.log('open sidebar');
     this.refs.sidebar.openDrawer();
   }
 
   navigateTo = (routeName) => {
-    console.log('navigate to', routeName);
     this.setState({ route: routeName });
     this.refs.sidebar.closeDrawer();
   }

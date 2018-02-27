@@ -26,7 +26,6 @@ export class RegisterForm1 extends React.Component {
       height: 400,
       cropping: true
     }).then((img) => {
-      console.log(img);
       this.setState({img_src: img.path});
     }).catch();
   }
