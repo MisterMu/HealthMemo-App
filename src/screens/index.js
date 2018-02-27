@@ -7,3 +7,4 @@ export * from './sensor';
 export * from './suggestion';
 export * from './hospital_info';
 export * from './emergency_contact';
+export * from './send_mail';

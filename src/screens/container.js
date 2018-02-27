@@ -19,7 +19,8 @@ import {
   SettingScreen,
   HospitalInfoScreen,
   EmergencyContactScreen,
-  SensorScreen
+  SensorScreen,
+  SendMailScreen
 } from './';
 import metrics from '../../config/metrics';
 import sensor from '../../assets/values/sensor';
@@ -123,6 +124,8 @@ export class Container extends React.Component {
       screen = <SuggestionScreen/>;
     } else if (this.state.route === 'Emergency Call') { 
       screen = <EmergencyCallScreen/>;
+    } else if (this.state.route === 'Send Email') {
+      screen = <SendMailScreen/>;
     } else {
       if (this.state.sensor_chars) {
         screen = <SensorScreen index={sensor.SENSOR_NAME.indexOf(this.state.route)} ble={this.state.sensor_chars}/>;
