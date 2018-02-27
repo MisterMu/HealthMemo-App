@@ -6,7 +6,8 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
     "android": "cd android && ./gradlew clean && cd .. && react-native run-android",
-    "apk": "react-native bundle --dev false --platform android --entry-file index.js --bundle-output ./android/app/build/intermediates/assets/debug/index.android.bundle --assets-dest ./android/app/build/intermediates/res/merged/debug && cd android && ./gradlew assembleDebug"
+    "apk": "react-native bundle --dev false --platform android --entry-file index.js --bundle-output ./android/app/build/intermediates/assets/debug/index.android.bundle --assets-dest ./android/app/build/intermediates/res/merged/debug && cd android && ./gradlew assembleDebug",
+    "moveA2D": "cp android/app/build/outputs/apk/app-debug.apk ~/Desktop"
   },
   "dependencies": {
     "react": "16.0.0",
