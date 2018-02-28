@@ -39,6 +39,7 @@ export class Sidebar extends React.Component {
         let path = '/storage/emulated/0/Download' + '/HM_backup.json';
         RNFS.writeFile(path, JSON.stringify(storage), 'utf8').then((success) => {
           ToastAndroid.show('HM_backup file already save to /download folder', ToastAndroid.LONG);
+          this.props.nav('Dashboard');
         });
       })
     })
