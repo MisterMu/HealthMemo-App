@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   View,
+  ScrollView,
   AsyncStorage,
   ActivityIndicator
 } from 'react-native';
@@ -14,10 +15,30 @@ export class SuggestionScreen extends React.Component {
     super(props);
     this.state = {
       disabled: true,
-      bmi: 0,
+      bmi_value: 0,
+      bmi: {},
       heart_rate: {},
-      oxygen: {}
+      oxygen: {},
+      temp: {}
     }
+  }
+
+  getBmiRange = (value) => {
+    let index = 4;
+    for (let i = 0; i < suggestion.BMI.range.length; i ++) {
+      if (value < suggestion.BMI.range[i]) {
+        index = i - 1;
+        break;
+      }
+    }
+    this.setState({
+      bmi: {
+        range: suggestion.BMI.range,
+        comment: suggestion.BMI.comment[index],
+        index: index,
+        color: ['#E0694C', '#78C5D4' ,'#71B562', '#BC73A9', '#6758A0']
+      }
+    })
   }
 
   getOxygenRange = (value) => {
@@ -63,13 +84,33 @@ export class SuggestionScreen extends React.Component {
     });
   }
 
+  getTempRange = (value) => {
+    let index = 3;
+    for (let i = 0; i < suggestion.TEMPERATURE.range.length; i ++) {
+      if (value < suggestion.TEMPERATURE.range[i]) {
+        index = i - 1;
+        break;
+      }
+    }
+    this.setState({
+      temp: {
+        range: suggestion.TEMPERATURE.range,
+        comment: suggestion.TEMPERATURE.comment[index],
+        index: suggestion.TEMPERATURE.comment.length - index - 1,
+        color: ['#E0694C', '#E5A455', '#F0EE7C', '#71B562']
+      }
+    })
+  }
+
   initialData = (age, gender) => {
     AsyncStorage.multiGet(sensor.SENSOR_NAME).then((values) => {
       let oxygen = JSON.parse(values[0][1]).lastUpdate.value;
       let heart_rate = JSON.parse(values[1][1]).lastUpdate.value;
       let temp = JSON.parse(values[2][1]).lastUpdate.value;
+      this.getBmiRange(this.state.bmi_value);
       this.getOxygenRange(oxygen);
       this.getHeartRateRange(age, gender, heart_rate);
+      this.getTempRange(temp);
       this.setState({disabled: false});
     });
   }
@@ -81,7 +122,7 @@ export class SuggestionScreen extends React.Component {
       let gender = (JSON.parse(data).gender === 'm')? 'male' : 'female';
       let w = JSON.parse(data).weight;
       let h = JSON.parse(data).height;
-      this.setState({bmi: (w / Math.pow(h / 100), 2).toFixed(2)});
+      this.setState({bmi_value: w / Math.pow((h / 100), 2).toFixed(2)});
       this.initialData(age, gender);
     });
   }
@@ -95,7 +136,14 @@ export class SuggestionScreen extends React.Component {
       );
     } else {
       return (
-        <View style={{padding: 16}}>
+        <ScrollView style={{padding: 16}}>
+          <SGIndicator
+            name='BMI'
+            range={this.state.bmi.range}
+            index={this.state.bmi.index}
+            comment={this.state.bmi.comment}
+            color={this.state.bmi.color}
+          />
           <SGIndicator
             name='Oxygen'
             range={this.state.oxygen.range}
@@ -110,7 +158,14 @@ export class SuggestionScreen extends React.Component {
             comment={this.state.heart_rate.comment}
             color={this.state.heart_rate.color}
           />
-        </View>
+          <SGIndicator
+            name='Temperature'
+            range={this.state.temp.range}
+            index={this.state.temp.index}
+            comment={this.state.temp.comment}
+            color={this.state.temp.color}
+          />
+        </ScrollView>
       );
     }
   }
