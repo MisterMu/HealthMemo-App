@@ -40,7 +40,7 @@ export class ProfileScreen extends React.Component {
       height: 400,
       cropping: true
     }).then(image => {
-      this.setState({img_src: img.path});
+      this.setState({img_src: image.path});
     });
   }
 
