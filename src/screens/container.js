@@ -36,7 +36,8 @@ export class Container extends React.Component {
     this.state = {
       route: 'Dashboard',
       sensor_chars: null,
-      ble_connect: 'nc'   /* sc = scan and connecting, nc = not connect, cn = connected */
+      ble_connect: 'nc',   /* sc = scan and connecting, nc = not connect, cn = connected */
+      sidebarOpen: false
     };
   }
 
@@ -95,10 +96,14 @@ export class Container extends React.Component {
       subscription.remove();
     });
     BackHandler.addEventListener('hardwareBackPress', () => {
-      if (this.state.route != 'Dashboard') {
-        this.setState({route: 'Dashboard'});
+      if (this.state.sidebarOpen) {
+        this.refs.sidebar.closeDrawer();
       } else {
-        BackHandler.exitApp();
+        if (this.state.route != 'Dashboard') {
+          this.setState({route: 'Dashboard'});
+        } else {
+          BackHandler.exitApp();
+        }
       }
       return true;
     });
@@ -142,6 +147,8 @@ export class Container extends React.Component {
               nav={this.navigateTo}
             />
         )}}
+        onDrawerClose={() => this.setState({sidebarOpen: false})}
+        onDrawerOpen={() => this.setState({sidebarOpen: true})}
       >
         <Appbar
           title={this.state.route}
