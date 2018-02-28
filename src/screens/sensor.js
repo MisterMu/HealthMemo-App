@@ -12,6 +12,7 @@ import metrics from '../../config/metrics';
 import sensor from '../../assets/values/sensor';
 import { ChartCard, PleaseWait } from '../components/';
 import { findMean } from '../../tools/math';
+import Base64 from '../../tools/base64';
 
 export class SensorScreen extends React.Component {
   constructor (props) {
@@ -28,7 +29,7 @@ export class SensorScreen extends React.Component {
     this.props.ble.map((char_tmp) => {
       if (char_tmp.uuid === sensor.CHARACTERISTIC[this.props.index]) {
         char_tmp.read().then((sens) => {
-          this.setState({value: Number(atob(sens.value)), disable: false});
+          this.setState({value: Number(Base64.atob(sens.value)), disable: false});
         })
       }
     });
@@ -62,6 +63,7 @@ export class SensorScreen extends React.Component {
       value: value
     }
     AsyncStorage.setItem(sensor.SENSOR_NAME[this.props.index], JSON.stringify(tmp));
+    console.log('set item', tmp);
     this.setState({data: tmp});
   }
 
@@ -82,13 +84,14 @@ export class SensorScreen extends React.Component {
   componentWillReceiveProps (props) {
     if (props.index !== this.props.index) {
       AsyncStorage.getItem(sensor.SENSOR_NAME[props.index]).then((data) => {
+        console.log('get item', data)
         this.setState({data: JSON.parse(data), value: 0});
       });
     }
   }
 
   componentDidUpdate (props, state) {
-    if (this.state.value !== state.value) {
+    if (this.state.value !== state.value && this.state.value != 0) {
       this.updateValue(this.state.value);
     }
   }
@@ -116,7 +119,7 @@ export class SensorScreen extends React.Component {
           <Button
             title='UPDATE VALUE'
             onPress={this.btnPress}
-            disabled={this.state.disable}
+            // disabled={this.state.disable}
           />
         </View>
         <View style={styles.chart_card}>
