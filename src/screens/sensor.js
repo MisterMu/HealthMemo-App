@@ -63,7 +63,6 @@ export class SensorScreen extends React.Component {
       value: value
     }
     AsyncStorage.setItem(sensor.SENSOR_NAME[this.props.index], JSON.stringify(tmp));
-    console.log('set item', tmp);
     this.setState({data: tmp});
   }
 
@@ -84,7 +83,6 @@ export class SensorScreen extends React.Component {
   componentWillReceiveProps (props) {
     if (props.index !== this.props.index) {
       AsyncStorage.getItem(sensor.SENSOR_NAME[props.index]).then((data) => {
-        console.log('get item', data)
         this.setState({data: JSON.parse(data), value: 0});
       });
     }
