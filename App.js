@@ -1,5 +1,14 @@
 import React from 'react';
-import { AsyncStorage, ActivityIndicator, View, NativeModules, ToastAndroid, Alert, StatusBar } from 'react-native';
+import {
+  AsyncStorage,
+  ActivityIndicator,
+  View,
+  NativeModules,
+  ToastAndroid,
+  Alert,
+  StatusBar,
+  Image
+} from 'react-native';
 import RNFS from 'react-native-fs';
 
 import { RegisterScreen, DashboardScreen, Container } from './src/screens';
@@ -13,7 +22,8 @@ export default class App extends React.Component {
   constructor (props) {
     super (props);
     this.state = {
-      render: ''
+      render: '',
+      cover: 3
     };
   }
 
@@ -35,6 +45,16 @@ export default class App extends React.Component {
         });
       }
     })
+  }
+
+  componentWillMount () {
+    let coverAppInterval = setInterval(() => {
+      if (this.state.cover === 0) {
+        clearInterval(coverAppInterval);
+      } else {
+        this.setState({cover: this.state.cover - 1});
+      }
+    }, 1000);
   }
 
   componentDidMount () {
@@ -102,20 +122,32 @@ export default class App extends React.Component {
   }
 
   render () {
-    let render;
-    if (this.state.render === 'register') {
-      render = <RegisterScreen done={() => this.setState({render: 'content'})}/>
-    } else if (this.state.render === 'content') {
-      render =  <Container/>;
+    if (this.state.cover !== 0) {
+      return (
+        <View style={{flex: 1}}>
+          <StatusBar hidden={true}/>
+          <Image
+            source={require('./assets/images/cover.png')}
+            style={{width: '100%', height: '100%', resizeMode: 'cover'}}
+          />
+        </View>
+      );
     } else {
-      render = <ActivityIndicator/>
+      let render;
+      if (this.state.render === 'register') {
+        render = <RegisterScreen done={() => this.setState({render: 'content'})}/>
+      } else if (this.state.render === 'content') {
+        render =  <Container/>;
+      } else {
+        render = <ActivityIndicator/>
+      }
+      return (
+        <View style={{flex: 1, justifyContent: 'center'}}>
+          <StatusBar backgroundColor={color.APP_THEME} barStyle='light-content'/>
+          {render}
+        </View>
+      );
     }
-    return (
-      <View style={{flex: 1, justifyContent: 'center'}}>
-        <StatusBar backgroundColor={color.APP_THEME} barStyle='light-content'/>
-        {render}
-      </View>
-    );
   }
 
 }
